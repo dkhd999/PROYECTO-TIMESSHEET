@@ -15,7 +15,7 @@ public class ConexionBDD {
             
             // Parámetros de conexión url/usuario/clave en mysql
             conexion = DriverManager.getConnection(
-                "jdbc:mysql://localhost/Proyecto_2?autoReconnect=true&useSSL=false&serverTimezone=UTC",
+                "jdbc:mysql://localhost/proyecto_2?autoReconnect=true&useSSL=false&serverTimezone=UTC",
                 "root",
                 "clientmod23"
             );
