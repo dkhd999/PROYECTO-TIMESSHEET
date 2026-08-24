@@ -1,0 +1,17 @@
+controlador\ProyectoController.class
+modelo\Proyecto.class
+modelo\DesarrolladorSenior.class
+modelo\ModeloBase.class
+vista\HojaTiempoForm.class
+modelo\HojaTiempo.class
+modelo\Recurso.class
+modelo\DetalleActividad.class
+controlador\ConexionBDD.class
+vista\ProyectoForm.class
+modelo\DesarrolladorJunior.class
+vista\MainForm$1.class
+controlador\HojaTiempoController.class
+controlador\ReporteController.class
+vista\MainForm$2.class
+vista\MainForm.class
+vista\Main.class
