@@ -4,10 +4,12 @@ import controlador.ConexionBDD;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class HojaTiempo {
 
-    private static final double MAX_HORAS_SEMANA = 60.0;
+    private static double maxHorasSemana = 60.0;
 
     private int id;
     private int proyectoId;
@@ -35,6 +37,25 @@ public class HojaTiempo {
         this.detalles = DetalleActividad.listarPorHoja(this.id);
     }
 
+    public void validarParaDetalle() throws Exception {
+        validarEstadoModificable();
+        cargarDetalles();
+        validarHorasMaximas();
+    }
+
+    public static void configurarMaxHorasSemana(double maximo) {
+        if (maximo <= 0) throw new IllegalArgumentException("El máximo semanal debe ser positivo.");
+        maxHorasSemana = maximo;
+    }
+
+    public LocalDate[] rangoPeriodo() throws Exception {
+        if (periodo == null || !periodo.matches("\\d{4}-\\d{2}-\\d{2}\\s*/\\s*\\d{4}-\\d{2}-\\d{2}"))
+            throw new Exception("El periodo debe usar el formato yyyy-MM-dd / yyyy-MM-dd.");
+        String[] fechas = periodo.split("\\s*/\\s*");
+        try { return new LocalDate[]{LocalDate.parse(fechas[0]), LocalDate.parse(fechas[1])}; }
+        catch (DateTimeParseException e) { throw new Exception("El periodo contiene fechas inválidas."); }
+    }
+
     public double calcularTotalHoras() {
         double total = 0;
         for (DetalleActividad d : detalles) total += d.getHoras();
@@ -53,13 +74,15 @@ public class HojaTiempo {
 
     private void validarHorasMaximas() throws Exception {
         // RF-03.7
-        if (calcularTotalHoras() > MAX_HORAS_SEMANA)
-            throw new Exception("El total de horas (" + calcularTotalHoras() + ") supera el máximo de " + MAX_HORAS_SEMANA + " horas semanales.");
+        if (calcularTotalHoras() > maxHorasSemana)
+            throw new Exception("El total de horas (" + calcularTotalHoras() + ") supera el máximo de " + maxHorasSemana + " horas semanales.");
     }
 
     // ─────── CRUD SQL ───────
     public void guardar() throws Exception {
-        String sql = "INSERT INTO HojaTiempo (proyecto_id, recurso_id, periodo, estado) VALUES (?,?,?,?)";
+        rangoPeriodo();
+        validarAsignacion();
+        String sql = "INSERT INTO hoja_tiempo (proyecto_id, recurso_id, periodo, estado) VALUES (?,?,?,?)";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, proyectoId);
@@ -73,9 +96,22 @@ public class HojaTiempo {
         }
     }
 
+    private void validarAsignacion() throws Exception {
+        String sql = "SELECT COUNT(*) FROM proyecto_recurso WHERE proyecto_id=? AND recurso_id=?";
+        try (Connection conn = new ConexionBDD().conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, proyectoId); stmt.setInt(2, recursoId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (!rs.next() || rs.getInt(1) == 0)
+                    throw new Exception("El recurso debe estar asignado al proyecto antes de crear la hoja.");
+            }
+        }
+    }
+
     public void actualizar() throws Exception {
         validarEstadoModificable();
-        String sql = "UPDATE HojaTiempo SET proyecto_id=?, recurso_id=?, periodo=?, estado=? WHERE id=?";
+        rangoPeriodo();
+        validarHorasMaximas();
+        String sql = "UPDATE hoja_tiempo SET proyecto_id=?, recurso_id=?, periodo=?, estado=? WHERE id=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, proyectoId);
@@ -90,8 +126,13 @@ public class HojaTiempo {
     // RF-03.5: Cambio de estado
     public void cambiarEstado(String nuevoEstado) throws Exception {
         validarEstadoModificable();
+        if (!"Borrador".equalsIgnoreCase(nuevoEstado) && !"Enviada".equalsIgnoreCase(nuevoEstado)
+            && !"Aprobada".equalsIgnoreCase(nuevoEstado) && !"Rechazada".equalsIgnoreCase(nuevoEstado))
+            throw new Exception("Estado no permitido.");
+        cargarDetalles();
+        validarHorasMaximas();
         this.estado = nuevoEstado;
-        String sql = "UPDATE HojaTiempo SET estado=? WHERE id=?";
+        String sql = "UPDATE hoja_tiempo SET estado=? WHERE id=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, estado);
@@ -104,7 +145,7 @@ public class HojaTiempo {
     public void eliminar() throws Exception {
         if (!"Borrador".equalsIgnoreCase(this.estado))
             throw new Exception("Solo se puede eliminar una hoja de tiempo en estado 'Borrador'.");
-        String sql = "DELETE FROM HojaTiempo WHERE id=?";
+        String sql = "UPDATE hoja_tiempo SET estado='Inactiva' WHERE id=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -114,7 +155,7 @@ public class HojaTiempo {
 
     public static List<HojaTiempo> listarTodas() throws Exception {
         List<HojaTiempo> lista = new ArrayList<>();
-        String sql = "SELECT * FROM HojaTiempo ORDER BY id DESC";
+        String sql = "SELECT * FROM hoja_tiempo WHERE estado <> 'Inactiva' ORDER BY id DESC";
         try (Connection conn = new ConexionBDD().conectar();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -126,6 +167,31 @@ public class HojaTiempo {
                     rs.getString("periodo"),
                     rs.getString("estado")
                 ));
+            }
+        }
+        return lista;
+    }
+
+    public static double costoAcumuladoProyecto(int proyectoId) throws Exception {
+        String sql = "SELECT COALESCE(SUM(d.horas * CASE WHEN r.tipo='Senior' THEN r.tarifa_base * 1.5 ELSE r.tarifa_base END), 0) "
+                   + "FROM detalle_actividad d JOIN hoja_tiempo h ON h.id=d.hoja_tiempo_id "
+                   + "JOIN recurso r ON r.id=h.recurso_id WHERE h.proyecto_id=? AND h.estado <> 'Inactiva'";
+        try (Connection conn = new ConexionBDD().conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, proyectoId);
+            try (ResultSet rs = stmt.executeQuery()) { return rs.next() ? rs.getDouble(1) : 0; }
+        }
+    }
+
+    public static List<HojaTiempo> listarPorFiltro(Integer proyectoId, Integer recursoId, String periodo) throws Exception {
+        List<HojaTiempo> lista = new ArrayList<>();
+        String sql = "SELECT * FROM hoja_tiempo WHERE estado <> 'Inactiva' AND (? IS NULL OR proyecto_id=?) "
+                   + "AND (? IS NULL OR recurso_id=?) AND (? IS NULL OR periodo=?) ORDER BY id DESC";
+        try (Connection conn = new ConexionBDD().conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setObject(1, proyectoId); stmt.setObject(2, proyectoId);
+            stmt.setObject(3, recursoId); stmt.setObject(4, recursoId);
+            stmt.setString(5, periodo); stmt.setString(6, periodo);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) lista.add(new HojaTiempo(rs.getInt("id"), rs.getInt("proyecto_id"), rs.getInt("recurso_id"), rs.getString("periodo"), rs.getString("estado")));
             }
         }
         return lista;

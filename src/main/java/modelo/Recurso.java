@@ -39,7 +39,8 @@ public abstract class Recurso {
 
     // ─────── CRUD SQL ───────
     public void guardar() throws Exception {
-        String sql = "INSERT INTO Recurso (nombre, correo, rol, tarifa_base, tipo, estado) VALUES (?, ?, ?, ?, ?, ?)";
+        validar();
+        String sql = "INSERT INTO recurso (nombre, correo, rol, tarifa_base, tipo, estado) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, nombre);
@@ -56,7 +57,8 @@ public abstract class Recurso {
     }
 
     public void actualizar() throws Exception {
-        String sql = "UPDATE Recurso SET nombre=?, correo=?, rol=?, tarifa_base=?, tipo=?, estado=? WHERE id=?";
+        validar();
+        String sql = "UPDATE recurso SET nombre=?, correo=?, rol=?, tarifa_base=?, tipo=?, estado=? WHERE id=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nombre);
@@ -78,7 +80,7 @@ public abstract class Recurso {
 
     public static List<Recurso> listarTodos() throws Exception {
         List<Recurso> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Recurso WHERE estado='Activo'";
+        String sql = "SELECT * FROM recurso WHERE estado='Activo'";
         try (Connection conn = new ConexionBDD().conectar();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -100,6 +102,13 @@ public abstract class Recurso {
             }
         }
         return lista;
+    }
+
+    private void validar() throws Exception {
+        if (nombre == null || nombre.trim().isEmpty()) throw new Exception("El nombre del recurso es obligatorio.");
+        if (correo == null || correo.trim().isEmpty()) throw new Exception("El correo del recurso es obligatorio.");
+        if (tarifaBase < 0) throw new Exception("La tarifa base no puede ser negativa.");
+        if (!"Junior".equalsIgnoreCase(tipo) && !"Senior".equalsIgnoreCase(tipo)) throw new Exception("El tipo debe ser Junior o Senior.");
     }
 
     // ─────── Getters & Setters ───────

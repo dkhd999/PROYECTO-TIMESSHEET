@@ -4,6 +4,8 @@ import controlador.ConexionBDD;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class Proyecto {
 
@@ -34,8 +36,16 @@ public class Proyecto {
             throw new Exception("El código del proyecto es obligatorio.");
         if (nombre == null || nombre.trim().isEmpty())
             throw new Exception("El nombre del proyecto es obligatorio.");
-        if (fechaInicio != null && fechaFin != null && fechaInicio.compareTo(fechaFin) > 0)
+        LocalDate inicio = parsearFecha(fechaInicio, "inicio");
+        LocalDate fin = parsearFecha(fechaFin, "fin");
+        if (inicio != null && fin != null && inicio.isAfter(fin))
             throw new Exception("La fecha de inicio no puede ser posterior a la fecha de fin.");
+    }
+
+    private LocalDate parsearFecha(String valor, String nombre) throws Exception {
+        if (valor == null || valor.trim().isEmpty()) return null;
+        try { return LocalDate.parse(valor.trim()); }
+        catch (DateTimeParseException e) { throw new Exception("La fecha " + nombre + " debe usar el formato yyyy-MM-dd."); }
     }
 
     // ─────── CRUD SQL ───────
@@ -45,7 +55,7 @@ public class Proyecto {
         if (existeCodigo(this.codigo, 0))
             throw new Exception("Ya existe un proyecto con el código: " + codigo);
 
-        String sql = "INSERT INTO Proyecto (codigo, nombre, cliente, fecha_inicio, fecha_fin_estimada, estado) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO proyecto (codigo, nombre, cliente, fecha_inicio, fecha_fin_estimada, estado) VALUES (?,?,?,?,?,?)";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, codigo);
@@ -66,7 +76,7 @@ public class Proyecto {
         if (existeCodigo(this.codigo, this.id))
             throw new Exception("Ya existe otro proyecto con el código: " + codigo);
 
-        String sql = "UPDATE Proyecto SET codigo=?, nombre=?, cliente=?, fecha_inicio=?, fecha_fin_estimada=?, estado=? WHERE id=?";
+        String sql = "UPDATE proyecto SET codigo=?, nombre=?, cliente=?, fecha_inicio=?, fecha_fin_estimada=?, estado=? WHERE id=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, codigo);
@@ -82,7 +92,7 @@ public class Proyecto {
 
     // RF-01.5: Solo inactiva si no tiene hojas de tiempo activas
     public void eliminar() throws Exception {
-        String checkSql = "SELECT COUNT(*) FROM HojaTiempo WHERE proyecto_id=? AND estado NOT IN ('Rechazada')";
+        String checkSql = "SELECT COUNT(*) FROM hoja_tiempo WHERE proyecto_id=? AND estado IN ('Borrador','Enviada','Aprobada')";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(checkSql)) {
             stmt.setInt(1, id);
@@ -96,7 +106,7 @@ public class Proyecto {
     }
 
     private boolean existeCodigo(String codigo, int ignorarId) throws Exception {
-        String sql = "SELECT COUNT(*) FROM Proyecto WHERE codigo=? AND id!=?";
+        String sql = "SELECT COUNT(*) FROM proyecto WHERE codigo=? AND id!=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, codigo);
@@ -109,7 +119,7 @@ public class Proyecto {
 
     public static List<Proyecto> listarTodos() throws Exception {
         List<Proyecto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Proyecto ORDER BY nombre";
+        String sql = "SELECT * FROM proyecto ORDER BY nombre";
         try (Connection conn = new ConexionBDD().conectar();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -126,6 +136,29 @@ public class Proyecto {
             }
         }
         return lista;
+    }
+
+    public static void asignarRecurso(int proyectoId, int recursoId) throws Exception {
+        String sql = "INSERT INTO proyecto_recurso (proyecto_id, recurso_id) VALUES (?, ?)";
+        try (Connection conn = new ConexionBDD().conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, proyectoId);
+            stmt.setInt(2, recursoId);
+            stmt.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new Exception("El recurso ya está asignado o el proyecto/recurso no existe.");
+        }
+    }
+
+    public static Proyecto consultar(int id) throws Exception {
+        String sql = "SELECT * FROM proyecto WHERE id=?";
+        try (Connection conn = new ConexionBDD().conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (!rs.next()) throw new Exception("No se encontró el proyecto.");
+                return new Proyecto(rs.getInt("id"), rs.getString("codigo"), rs.getString("nombre"), rs.getString("cliente"),
+                        rs.getString("fecha_inicio"), rs.getString("fecha_fin_estimada"), rs.getString("estado"));
+            }
+        }
     }
 
     // ─────── Getters & Setters ───────

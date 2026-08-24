@@ -4,6 +4,8 @@ import controlador.ConexionBDD;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class DetalleActividad {
 
@@ -34,6 +36,29 @@ public class DetalleActividad {
             throw new Exception("La descripción de la actividad es obligatoria.");
         if (existeDuplicado())
             throw new Exception("Ya existe un registro para esta fecha y módulo en la hoja de tiempo (RF-07.1).");
+        try {
+            LocalDate fechaActividad = LocalDate.parse(fecha);
+            HojaTiempo hoja = cargarHoja();
+            hoja.validarParaDetalle();
+            LocalDate[] rango = hoja.rangoPeriodo();
+            if (fechaActividad.isBefore(rango[0]) || fechaActividad.isAfter(rango[1]))
+                throw new Exception("La fecha de la actividad debe estar dentro del periodo de la hoja.");
+            if (hoja.calcularTotalHoras() + horas > 60.0)
+                throw new Exception("El total semanal no puede superar 60 horas.");
+        } catch (DateTimeParseException e) {
+            throw new Exception("La fecha debe usar el formato yyyy-MM-dd.");
+        }
+    }
+
+    private HojaTiempo cargarHoja() throws Exception {
+        String sql = "SELECT id, proyecto_id, recurso_id, periodo, estado FROM hoja_tiempo WHERE id=?";
+        try (Connection conn = new ConexionBDD().conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, hojaTiempoId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (!rs.next()) throw new Exception("No existe la hoja de tiempo indicada.");
+                return new HojaTiempo(rs.getInt("id"), rs.getInt("proyecto_id"), rs.getInt("recurso_id"), rs.getString("periodo"), rs.getString("estado"));
+            }
+        }
     }
 
     private boolean existeDuplicado() throws Exception {
@@ -83,6 +108,8 @@ public class DetalleActividad {
     }
 
     public void eliminar() throws Exception {
+        HojaTiempo hoja = cargarHoja();
+        hoja.validarParaDetalle();
         String sql = "DELETE FROM DetalleActividad WHERE id=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

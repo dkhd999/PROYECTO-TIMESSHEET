@@ -23,8 +23,13 @@ public class HojaTiempoControlador {
 
     public void cambiarEstado(int id, int proyectoId, int recursoId,
                               String periodo, String nuevoEstado) throws Exception {
-        HojaTiempo h = new HojaTiempo(id, proyectoId, recursoId, periodo, "Borrador");
+        HojaTiempo h = new HojaTiempo(id, proyectoId, recursoId, periodo, obtenerEstado(id));
         h.cambiarEstado(nuevoEstado);
+    }
+
+    private String obtenerEstado(int id) throws Exception {
+        for (HojaTiempo hoja : HojaTiempo.listarTodas()) if (hoja.getId() == id) return hoja.getEstado();
+        throw new Exception("No se encontró la hoja de tiempo.");
     }
 
     public void eliminarHoja(int id, int proyectoId, int recursoId,
@@ -45,6 +50,10 @@ public class HojaTiempoControlador {
             });
         }
         return modelo;
+    }
+
+    public List<HojaTiempo> listarPorFiltro(Integer proyectoId, Integer recursoId, String periodo) throws Exception {
+        return HojaTiempo.listarPorFiltro(proyectoId, recursoId, periodo);
     }
 
     // ─────── DETALLE DE ACTIVIDAD ───────
@@ -69,6 +78,19 @@ public class HojaTiempoControlador {
         DetalleActividad d = new DetalleActividad();
         d.setId(idDetalle);
         d.eliminar();
+    }
+
+    public void actualizarDetalle(int id, String fecha, String descripcion, double horas, String modulo, int hojaId) throws Exception {
+        DetalleActividad d = new DetalleActividad(id, fecha.trim(), descripcion.trim(), horas, modulo.trim(), hojaId);
+        d.actualizar();
+    }
+
+    public void asignarRecurso(int proyectoId, int recursoId) throws Exception {
+        modelo.Proyecto.asignarRecurso(proyectoId, recursoId);
+    }
+
+    public double costoAcumuladoProyecto(int proyectoId) throws Exception {
+        return modelo.HojaTiempo.costoAcumuladoProyecto(proyectoId);
     }
 
     public DefaultTableModel obtenerTablaDetalles(int hojaTiempoId) throws Exception {

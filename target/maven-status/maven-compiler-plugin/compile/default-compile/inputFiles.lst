@@ -1,6 +1,7 @@
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\controlador\ConexionBDD.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\controlador\HojaTiempoControlador.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\controlador\ProyectoControlador.java
+C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\controlador\RecursoControlador.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\controlador\ReporteControlador.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\modelo\DesarrolladorJunior.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\modelo\DesarrolladorSenior.java
@@ -8,6 +9,9 @@ C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\jav
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\modelo\HojaTiempo.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\modelo\Proyecto.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\modelo\Recurso.java
+C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\vista\AsignacionVista.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\vista\HojaTiempoVista.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\vista\Main.java
 C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\vista\ProyectoVista.java
+C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\vista\RecursoVista.java
+C:\Users\Usuario\OneDrive\Documentos\NetBeansProjects\Proyecto_2MVC\src\main\java\vista\ReporteVista.java

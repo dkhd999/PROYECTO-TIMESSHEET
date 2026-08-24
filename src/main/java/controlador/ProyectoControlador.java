@@ -61,6 +61,12 @@ public class ProyectoControlador {
         }
         return combo;
     }
+
+    public Proyecto consultar(int id) throws Exception { return Proyecto.consultar(id); }
+
+    public void asignarRecurso(int proyectoId, int recursoId) throws Exception {
+        Proyecto.asignarRecurso(proyectoId, recursoId);
+    }
     
     
 }

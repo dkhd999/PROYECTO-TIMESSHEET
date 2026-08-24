@@ -71,6 +71,15 @@ private void cargarTablaDetalles(int hojaId) {
         tblHojas = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDetalles = new javax.swing.JTable();
+        cmbEstado = new javax.swing.JComboBox<>();
+        lblCostoTotal = new javax.swing.JLabel();
+        btnCambiarEstado = new javax.swing.JButton();
+        btnEliminarHoja = new javax.swing.JButton();
+        btnActualizarDetalle = new javax.swing.JButton();
+        btnActualizarDetalle1 = new javax.swing.JButton();
+        btnFiltrar = new javax.swing.JButton();
+        txtFiltroPeriodo = new javax.swing.JTextField();
+        lblEstado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,6 +142,28 @@ private void cargarTablaDetalles(int hojaId) {
         ));
         jScrollPane2.setViewportView(tblDetalles);
 
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Borrador", "Enviada", "Aprobada", "Rechazada", " " }));
+
+        lblCostoTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblCostoTotal.setText("Costo Total:");
+
+        btnCambiarEstado.setText("Cambiar Estado");
+        btnCambiarEstado.addActionListener(this::btnCambiarEstadoActionPerformed);
+
+        btnEliminarHoja.setText("Eliminar Hoja");
+        btnEliminarHoja.addActionListener(this::btnEliminarHojaActionPerformed);
+
+        btnActualizarDetalle.setText("Actualizar Detalle");
+        btnActualizarDetalle.addActionListener(this::btnActualizarDetalleActionPerformed);
+
+        btnActualizarDetalle1.setText("Eliminar Detalle");
+        btnActualizarDetalle1.addActionListener(this::btnActualizarDetalle1ActionPerformed);
+
+        btnFiltrar.setText("Filtrar");
+
+        lblEstado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblEstado.setText("Estado");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -141,43 +172,60 @@ private void cargarTablaDetalles(int hojaId) {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(79, 79, 79)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblModulo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblIDRecurso, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblIDProyecto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblFechaDetalle1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblTotalHoras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblFechaDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblModulo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblIDRecurso, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblIDProyecto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblFechaDetalle1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblTotalHoras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblFechaDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnFiltrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtModulo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFechaDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPeriodo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtRecursoId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtProyectoId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtProyectoId)
+                            .addComponent(txtRecursoId)
+                            .addComponent(txtPeriodo)
+                            .addComponent(txtFechaDetalle)
+                            .addComponent(txtDescripcion)
+                            .addComponent(txtHoras)
+                            .addComponent(txtModulo)
+                            .addComponent(txtHojaId)
+                            .addComponent(cmbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtFiltroPeriodo))
+                        .addGap(87, 87, 87))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
+                        .addGap(96, 96, 96)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnAgregarDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(68, 68, 68)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCambiarEstado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnActualizarDetalle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnActualizarDetalle1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnEliminarHoja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnCrear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(87, 87, 87)))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(464, Short.MAX_VALUE))
+                .addGap(367, 367, 367))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblIDProyecto)
@@ -213,18 +261,37 @@ private void cargarTablaDetalles(int hojaId) {
                                 .addGap(18, 18, 18)
                                 .addComponent(txtPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(lblTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(btnCrear)
-                        .addGap(37, 37, 37)
-                        .addComponent(btnAgregarDetalle)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtFiltroPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnFiltrar))
+                        .addGap(38, 38, 38)
+                        .addComponent(lblCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(147, 147, 147)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnActualizarDetalle)
+                            .addComponent(btnActualizarDetalle1))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCambiarEstado)
+                            .addComponent(btnEliminarHoja))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAgregarDetalle)
+                            .addComponent(btnCrear))))
+                .addGap(22, 22, 22))
         );
 
         pack();
@@ -260,6 +327,90 @@ private void cargarTablaDetalles(int hojaId) {
 }
     }//GEN-LAST:event_btnAgregarDetalleActionPerformed
 
+    private void btnCambiarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarEstadoActionPerformed
+    int fila = tblHojas.getSelectedRow();
+
+    if (fila == -1) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this, "Selecciona una hoja de tiempo."
+        );
+        return;
+    }
+
+    try {
+        int idHoja = (int) tblHojas.getValueAt(fila, 0);
+        int proyectoId = (int) tblHojas.getValueAt(fila, 1);
+        int recursoId = (int) tblHojas.getValueAt(fila, 2);
+        String periodo = tblHojas.getValueAt(fila, 3).toString();
+
+        new controlador.HojaTiempoControlador().cambiarEstado(
+            idHoja,
+            proyectoId,
+            recursoId,
+            periodo,
+            cmbEstado.getSelectedItem().toString()
+        );
+
+        javax.swing.JOptionPane.showMessageDialog(
+            this, "Estado actualizado correctamente."
+        );
+
+        cargarTablaHojas();
+
+    } catch (Exception ex) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this, "Error: " + ex.getMessage()
+        );
+    }
+    }//GEN-LAST:event_btnCambiarEstadoActionPerformed
+
+    private void btnEliminarHojaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarHojaActionPerformed
+        int fila = tblHojas.getSelectedRow();
+
+    if (fila == -1) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this, "Selecciona una hoja de tiempo."
+        );
+        return;
+    }
+
+    try {
+        int idHoja = (int) tblHojas.getValueAt(fila, 0);
+        int proyectoId = (int) tblHojas.getValueAt(fila, 1);
+        int recursoId = (int) tblHojas.getValueAt(fila, 2);
+        String periodo = tblHojas.getValueAt(fila, 3).toString();
+        String estado = tblHojas.getValueAt(fila, 4).toString();
+
+        new controlador.HojaTiempoControlador().eliminarHoja(
+            idHoja,
+            proyectoId,
+            recursoId,
+            periodo,
+            estado
+        );
+
+        javax.swing.JOptionPane.showMessageDialog(
+            this, "Hoja de tiempo inactivada correctamente."
+        );
+
+        cargarTablaHojas();
+
+    } catch (Exception ex) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this, "Error: " + ex.getMessage()
+        );
+    }
+
+    }//GEN-LAST:event_btnEliminarHojaActionPerformed
+
+    private void btnActualizarDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarDetalleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnActualizarDetalleActionPerformed
+
+    private void btnActualizarDetalle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarDetalle1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnActualizarDetalle1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -286,10 +437,18 @@ private void cargarTablaDetalles(int hojaId) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizarDetalle;
+    private javax.swing.JButton btnActualizarDetalle1;
     private javax.swing.JButton btnAgregarDetalle;
+    private javax.swing.JButton btnCambiarEstado;
     private javax.swing.JButton btnCrear;
+    private javax.swing.JButton btnEliminarHoja;
+    private javax.swing.JButton btnFiltrar;
+    private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblCostoTotal;
+    private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblFechaDetalle;
     private javax.swing.JLabel lblFechaDetalle1;
     private javax.swing.JLabel lblHojaId;
@@ -303,6 +462,7 @@ private void cargarTablaDetalles(int hojaId) {
     private javax.swing.JTable tblHojas;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtFechaDetalle;
+    private javax.swing.JTextField txtFiltroPeriodo;
     private javax.swing.JTextField txtHojaId;
     private javax.swing.JTextField txtHoras;
     private javax.swing.JTextField txtModulo;

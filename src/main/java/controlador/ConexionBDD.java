@@ -7,7 +7,7 @@ public class ConexionBDD {
     // ATRIBUTO
     Connection conexion;
 
-    public Connection conectar() {
+    public Connection conectar() throws SQLException {
         // LANZAR CÓDIGO DE PRUEBA 
         try {
             // Driver actualizado de MySQL para evitar la advertencia de deprecación
@@ -21,8 +21,8 @@ public class ConexionBDD {
             );
 
             System.out.println("CONECTADO"); 
-        } catch (ClassNotFoundException | SQLException e) { // CAPTURAR ERRORES 
-            System.out.println("ERROR DE CONEXION A LA BASE DE DATOS: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("No se encontró el controlador de MySQL.", e);
         }
         return conexion;
     }

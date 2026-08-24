@@ -1,111 +1,66 @@
-CREATE DATABASE  IF NOT EXISTS `proyecto_2` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `proyecto_2`;
--- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
---
--- Host: localhost    Database: proyecto_2
--- ------------------------------------------------------
--- Server version	8.0.44
+CREATE DATABASE IF NOT EXISTS proyecto_2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE proyecto_2;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS detalle_actividad;
+DROP TABLE IF EXISTS hoja_tiempo;
+DROP TABLE IF EXISTS proyecto_recurso;
+DROP TABLE IF EXISTS recurso;
+DROP TABLE IF EXISTS proyecto;
 
---
--- Table structure for table `detalle_actividad`
---
+CREATE TABLE proyecto (
+    id INT NOT NULL AUTO_INCREMENT,
+    codigo VARCHAR(50) NOT NULL,
+    nombre VARCHAR(150) NOT NULL,
+    cliente VARCHAR(150) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin_estimada DATE NOT NULL,
+    estado ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_proyecto_codigo (codigo),
+    CONSTRAINT ck_proyecto_fechas CHECK (fecha_inicio <= fecha_fin_estimada)
+) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `detalle_actividad`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `detalle_actividad` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `fecha` date NOT NULL,
-  `descripcion` text NOT NULL,
-  `horas` decimal(5,2) NOT NULL,
-  `modulo` varchar(100) NOT NULL,
-  `hoja_tiempo_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `hoja_tiempo_id` (`hoja_tiempo_id`),
-  CONSTRAINT `detalle_actividad_ibfk_1` FOREIGN KEY (`hoja_tiempo_id`) REFERENCES `hoja_tiempo` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE recurso (
+    id INT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(150) NOT NULL,
+    rol VARCHAR(50) NOT NULL,
+    tarifa_base DECIMAL(10,2) NOT NULL,
+    tipo ENUM('Junior', 'Senior') NOT NULL,
+    estado ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_recurso_correo (correo),
+    CONSTRAINT ck_recurso_tarifa CHECK (tarifa_base >= 0)
+) ENGINE=InnoDB;
 
---
--- Dumping data for table `detalle_actividad`
---
+CREATE TABLE proyecto_recurso (
+    proyecto_id INT NOT NULL,
+    recurso_id INT NOT NULL,
+    PRIMARY KEY (proyecto_id, recurso_id),
+    CONSTRAINT fk_pr_proyecto FOREIGN KEY (proyecto_id) REFERENCES proyecto(id),
+    CONSTRAINT fk_pr_recurso FOREIGN KEY (recurso_id) REFERENCES recurso(id)
+) ENGINE=InnoDB;
 
-LOCK TABLES `detalle_actividad` WRITE;
-/*!40000 ALTER TABLE `detalle_actividad` DISABLE KEYS */;
-/*!40000 ALTER TABLE `detalle_actividad` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE TABLE hoja_tiempo (
+    id INT NOT NULL AUTO_INCREMENT,
+    proyecto_id INT NOT NULL,
+    recurso_id INT NOT NULL,
+    periodo VARCHAR(50) NOT NULL,
+    estado ENUM('Borrador', 'Enviada', 'Aprobada', 'Rechazada', 'Inactiva') NOT NULL DEFAULT 'Borrador',
+    PRIMARY KEY (id),
+    CONSTRAINT fk_hoja_proyecto FOREIGN KEY (proyecto_id) REFERENCES proyecto(id),
+    CONSTRAINT fk_hoja_recurso FOREIGN KEY (recurso_id) REFERENCES recurso(id)
+) ENGINE=InnoDB;
 
---
--- Table structure for table `hoja_tiempo`
---
-
-DROP TABLE IF EXISTS `hoja_tiempo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `hoja_tiempo` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `proyecto` varchar(100) NOT NULL,
-  `recurso_id` int NOT NULL,
-  `periodo` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `recurso_id` (`recurso_id`),
-  CONSTRAINT `hoja_tiempo_ibfk_1` FOREIGN KEY (`recurso_id`) REFERENCES `recurso` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `hoja_tiempo`
---
-
-LOCK TABLES `hoja_tiempo` WRITE;
-/*!40000 ALTER TABLE `hoja_tiempo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `hoja_tiempo` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `recurso`
---
-
-DROP TABLE IF EXISTS `recurso`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `recurso` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
-  `identificacion` varchar(50) NOT NULL,
-  `tarifa_base` decimal(10,2) NOT NULL,
-  `tipo` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `recurso`
---
-
-LOCK TABLES `recurso` WRITE;
-/*!40000 ALTER TABLE `recurso` DISABLE KEYS */;
-/*!40000 ALTER TABLE `recurso` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2026-08-23 21:24:43
+CREATE TABLE detalle_actividad (
+    id INT NOT NULL AUTO_INCREMENT,
+    fecha DATE NOT NULL,
+    descripcion VARCHAR(500) NOT NULL,
+    horas DECIMAL(5,2) NOT NULL,
+    modulo VARCHAR(100) NOT NULL,
+    hoja_tiempo_id INT NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_detalle_fecha_modulo (fecha, modulo, hoja_tiempo_id),
+    CONSTRAINT fk_detalle_hoja FOREIGN KEY (hoja_tiempo_id) REFERENCES hoja_tiempo(id) ON DELETE CASCADE,
+    CONSTRAINT ck_detalle_horas CHECK (horas > 0 AND horas <= 24)
+) ENGINE=InnoDB;

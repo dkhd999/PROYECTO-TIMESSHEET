@@ -5,12 +5,17 @@ vista\ProyectoVista.class
 modelo\HojaTiempo.class
 modelo\Recurso.class
 controlador\ReporteControlador.class
+vista\ReporteVista.class
 controlador\HojaTiempoControlador$2.class
 controlador\HojaTiempoControlador.class
+vista\RecursoVista.class
+controlador\RecursoControlador.class
 modelo\DetalleActividad.class
+vista\AsignacionVista.class
 controlador\ConexionBDD.class
 controlador\HojaTiempoControlador$1.class
 modelo\DesarrolladorJunior.class
 controlador\ProyectoControlador.class
 controlador\ProyectoControlador$1.class
+controlador\RecursoControlador$1.class
 vista\Main.class
