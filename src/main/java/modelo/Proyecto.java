@@ -105,6 +105,11 @@ public class Proyecto {
         actualizar();
     }
 
+    public void activar() throws Exception {
+        this.estado = "Activo";
+        actualizar();
+    }
+
     private boolean existeCodigo(String codigo, int ignorarId) throws Exception {
         String sql = "SELECT COUNT(*) FROM proyecto WHERE codigo=? AND id!=?";
         try (Connection conn = new ConexionBDD().conectar();
@@ -147,6 +152,18 @@ public class Proyecto {
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new Exception("El recurso ya está asignado o el proyecto/recurso no existe.");
         }
+    }
+
+    public static List<Object[]> listarAsignaciones() throws Exception {
+        List<Object[]> lista = new ArrayList<>();
+        String sql = "SELECT p.id, p.codigo, p.nombre, r.id, r.nombre, r.tipo "
+               + "FROM proyecto p LEFT JOIN proyecto_recurso pr ON p.id=pr.proyecto_id "
+               + "LEFT JOIN recurso r ON r.id=pr.recurso_id "
+               + "WHERE p.estado='Activo' ORDER BY p.nombre, r.nombre";
+        try (Connection conn = new ConexionBDD().conectar(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) lista.add(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6)});
+        }
+        return lista;
     }
 
     public static Proyecto consultar(int id) throws Exception {

@@ -4,6 +4,7 @@ import modelo.DesarrolladorJunior;
 import modelo.DesarrolladorSenior;
 import modelo.Recurso;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 public class RecursoControlador {
@@ -21,15 +22,23 @@ public class RecursoControlador {
         crear(id, nombre, correo, rol, tarifaBase, tipo, "Activo").eliminar();
     }
 
+    public void activar(int id, String nombre, String correo, String rol, double tarifaBase, String tipo) throws Exception {
+        crear(id, nombre, correo, rol, tarifaBase, tipo, "Inactivo").activar();
+    }
+
     public DefaultTableModel obtenerTablaRecursos() throws Exception {
         DefaultTableModel tabla = new DefaultTableModel(new String[]{"ID", "Nombre", "Correo", "Rol", "Tarifa", "Tipo", "Estado"}, 0) {
             @Override public boolean isCellEditable(int fila, int columna) { return false; }
         };
-        for (Recurso recurso : Recurso.listarTodos()) tabla.addRow(new Object[]{recurso.getId(), recurso.getNombre(), recurso.getCorreo(), recurso.getRol(), recurso.calcularTarifaHora(), recurso.getTipo(), recurso.getEstado()});
+        for (Recurso recurso : Recurso.listarTodos()) tabla.addRow(new Object[]{recurso.getId(), recurso.getNombre(), recurso.getCorreo(), recurso.getRol(), recurso.getTarifaBase(), recurso.getTipo(), recurso.getEstado()});
         return tabla;
     }
 
-    public List<Recurso> listar() throws Exception { return Recurso.listarTodos(); }
+    public DefaultComboBoxModel<Recurso> cargarRecursos() throws Exception {
+        DefaultComboBoxModel<Recurso> combo = new DefaultComboBoxModel<>();
+        for (Recurso recurso : Recurso.listarActivos()) combo.addElement(recurso);
+        return combo;
+    }
 
     private Recurso crear(int id, String nombre, String correo, String rol, double tarifaBase, String tipo, String estado) throws Exception {
         if ("Senior".equalsIgnoreCase(tipo)) return new DesarrolladorSenior(id, nombre.trim(), correo.trim(), tarifaBase, estado);

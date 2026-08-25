@@ -10,24 +10,12 @@ package vista;
  */
 public class ProyectoVista extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProyectoVista.class.getName());
-
     /**
      * Creates new form ProyectoVista
      */
     public ProyectoVista() {
         initComponents();
-        cargarTabla();
     }
-private void cargarTabla() {
-    try {
-        tblProyectos.setModel(
-            new controlador.ProyectoControlador().obtenerTablaProyectos()
-        );
-    } catch (Exception ex) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
-    }
-}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,6 +39,7 @@ private void cargarTabla() {
         btnEliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProyectos = new javax.swing.JTable();
+        btnHabilitar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,10 +54,8 @@ private void cargarTabla() {
         lblFechaFin.setText("Fecha Fin");
 
         btnGuardar.setText("Guardar ");
-        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
         btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         tblProyectos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -83,36 +70,41 @@ private void cargarTabla() {
         ));
         jScrollPane1.setViewportView(tblProyectos);
 
+        btnHabilitar.setText("Habilitar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(100, 100, 100)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(lblFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(219, 219, 219)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(172, 172, 172)
+                        .addGap(100, 100, 100)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(txtNombre)
+                            .addComponent(txtCliente)
+                            .addComponent(txtFechaInicio)
+                            .addComponent(txtFechaFin)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(145, 145, 145)
                         .addComponent(btnGuardar)
-                        .addGap(142, 142, 142)
-                        .addComponent(btnEliminar)))
-                .addContainerGap(138, Short.MAX_VALUE))
+                        .addGap(80, 80, 80)
+                        .addComponent(btnEliminar)
+                        .addGap(62, 62, 62)
+                        .addComponent(btnHabilitar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,87 +134,29 @@ private void cargarTabla() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
-                    .addComponent(btnEliminar))
+                    .addComponent(btnEliminar)
+                    .addComponent(btnHabilitar))
                 .addGap(90, 90, 90))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        try {
-    new controlador.ProyectoControlador().guardar(
-        txtCodigo.getText(), txtNombre.getText(), txtCliente.getText(),
-        txtFechaInicio.getText(), txtFechaFin.getText()
-    );
-    javax.swing.JOptionPane.showMessageDialog(this, "Proyecto guardado con éxito.");
-    cargarTabla();
-} catch (Exception ex) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-    }
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int fila = tblProyectos.getSelectedRow();
-if (fila == -1) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Selecciona un proyecto de la tabla.");
-    return;
-}
-int id = (int) tblProyectos.getValueAt(fila, 0);
-String codigo  = (String) tblProyectos.getValueAt(fila, 1);
-String nombre  = (String) tblProyectos.getValueAt(fila, 2);
-String cliente = (String) tblProyectos.getValueAt(fila, 3);
-String fIni    = (String) tblProyectos.getValueAt(fila, 4);
-String fFin    = (String) tblProyectos.getValueAt(fila, 5);
-String estado  = (String) tblProyectos.getValueAt(fila, 6);
-try {
-    new controlador.ProyectoControlador().eliminar(id, codigo, nombre, cliente, fIni, fFin, estado);
-    javax.swing.JOptionPane.showMessageDialog(this, "Proyecto inactivado.");
-    cargarTabla();
-} catch (Exception ex) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-    }
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ProyectoVista().setVisible(true));
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnGuardar;
+    public javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnGuardar;
+    public javax.swing.JButton btnHabilitar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblFechaFin;
     private javax.swing.JLabel lblFechaInicio;
     private javax.swing.JLabel lblNombre;
-    private javax.swing.JTable tblProyectos;
-    private javax.swing.JTextField txtCliente;
-    private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtFechaFin;
-    private javax.swing.JTextField txtFechaInicio;
-    private javax.swing.JTextField txtNombre;
+    public javax.swing.JTable tblProyectos;
+    public javax.swing.JTextField txtCliente;
+    public javax.swing.JTextField txtCodigo;
+    public javax.swing.JTextField txtFechaFin;
+    public javax.swing.JTextField txtFechaInicio;
+    public javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,7 +9,9 @@ public class Main {
     public static void main(String[] args) {
         // Lanza la ventana principal del sistema
         java.awt.EventQueue.invokeLater(() -> {
-            new ProyectoVista().setVisible(true);
+            ProyectoVista vista = new ProyectoVista();
+            new controlador.ProyectoVistaControlador(vista);
+            vista.setVisible(true);
         });
     }
 }

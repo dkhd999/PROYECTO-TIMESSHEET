@@ -78,9 +78,22 @@ public abstract class Recurso {
         actualizar();
     }
 
+    public void activar() throws Exception {
+        this.estado = "Activo";
+        actualizar();
+    }
+
     public static List<Recurso> listarTodos() throws Exception {
+        return listar(false);
+    }
+
+    public static List<Recurso> listarActivos() throws Exception {
+        return listar(true);
+    }
+
+    private static List<Recurso> listar(boolean soloActivos) throws Exception {
         List<Recurso> lista = new ArrayList<>();
-        String sql = "SELECT * FROM recurso WHERE estado='Activo'";
+        String sql = "SELECT * FROM recurso" + (soloActivos ? " WHERE estado='Activo'" : "") + " ORDER BY nombre";
         try (Connection conn = new ConexionBDD().conectar();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {

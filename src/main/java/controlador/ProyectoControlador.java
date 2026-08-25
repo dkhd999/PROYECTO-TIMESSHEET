@@ -38,6 +38,12 @@ public class ProyectoControlador {
         p.eliminar();
     }
 
+    public void activar(int id, String codigo, String nombre, String cliente,
+                        String fechaInicio, String fechaFin) throws Exception {
+        Proyecto p = new Proyecto(id, codigo, nombre, cliente, fechaInicio, fechaFin, "Inactivo");
+        p.activar();
+    }
+
     // ─────── LLENAR TABLA ───────
     public DefaultTableModel obtenerTablaProyectos() throws Exception {
         String[] columnas = {"ID", "Código", "Nombre", "Cliente", "Fecha Inicio", "Fecha Fin", "Estado"};
@@ -66,6 +72,15 @@ public class ProyectoControlador {
 
     public void asignarRecurso(int proyectoId, int recursoId) throws Exception {
         Proyecto.asignarRecurso(proyectoId, recursoId);
+    }
+
+    public DefaultTableModel obtenerTablaAsignaciones() throws Exception {
+        DefaultTableModel modelo = new DefaultTableModel(
+            new String[]{"Proyecto ID", "Código", "Proyecto", "Recurso ID", "Recurso", "Tipo"}, 0) {
+                @Override public boolean isCellEditable(int fila, int columna) { return false; }
+            };
+        for (Object[] fila : Proyecto.listarAsignaciones()) modelo.addRow(fila);
+        return modelo;
     }
     
     

@@ -10,8 +10,6 @@ package vista;
  */
 public class ReporteVista extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ReporteVista.class.getName());
-
     /**
      * Creates new form ReporteVista
      */
@@ -34,16 +32,26 @@ public class ReporteVista extends javax.swing.JFrame {
         btnGenerarPDF = new javax.swing.JButton();
         txtHojaId = new javax.swing.JTextField();
         txtRecursoId = new javax.swing.JTextField();
+        lblIdHoja = new javax.swing.JLabel();
+        lblProgramador = new javax.swing.JLabel();
+        lblProgramador1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        cmbHojas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbHojas.setModel(new javax.swing.DefaultComboBoxModel<modelo.HojaTiempo>());
 
         btnSeleccionarRuta.setText("Seleccionar Ruta");
-        btnSeleccionarRuta.addActionListener(this::btnSeleccionarRutaActionPerformed);
 
         btnGenerarPDF.setText("Generar PDF");
-        btnGenerarPDF.addActionListener(this::btnGenerarPDFActionPerformed);
+
+        lblIdHoja.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblIdHoja.setText("ID Hoja:");
+
+        lblProgramador.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblProgramador.setText("ID Programador:");
+
+        lblProgramador1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblProgramador1.setText("Ruta Archivo:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,32 +63,43 @@ public class ReporteVista extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addComponent(btnGenerarPDF)
                 .addGap(153, 153, 153))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblIdHoja, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProgramador)
+                    .addComponent(lblProgramador1))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtRutaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtRecursoId, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(92, 92, 92)
                         .addComponent(cmbHojas, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(107, 107, 107))))
+                        .addGap(86, 86, 86))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtRutaArchivo)
+                            .addComponent(txtRecursoId, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(51, 51, 51)
+                .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbHojas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbHojas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addComponent(txtRecursoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(txtRutaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                    .addComponent(lblIdHoja))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRecursoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProgramador))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRutaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProgramador1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGenerarPDF)
                     .addComponent(btnSeleccionarRuta))
@@ -90,88 +109,15 @@ public class ReporteVista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSeleccionarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarRutaActionPerformed
-        javax.swing.JFileChooser selector =
-        new javax.swing.JFileChooser();
-
-    if (selector.showSaveDialog(this)
-            == javax.swing.JFileChooser.APPROVE_OPTION) {
-
-        txtRutaArchivo.setText(
-            selector.getSelectedFile().getAbsolutePath()
-        );
-    }
-    }//GEN-LAST:event_btnSeleccionarRutaActionPerformed
-
-    private void btnGenerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPDFActionPerformed
-        try {
-        if (txtRutaArchivo.getText().trim().isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(
-                this, "Selecciona una ubicación para guardar el PDF."
-            );
-            return;
-        }
-
-        int hojaId = Integer.parseInt(
-            txtHojaId.getText().trim()
-        );
-
-        int recursoId = Integer.parseInt(
-            txtRecursoId.getText().trim()
-        );
-
-        new controlador.ReporteControlador().generarReportePDF(
-            hojaId,
-            recursoId,
-            txtRutaArchivo.getText().trim()
-        );
-
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Reporte PDF generado correctamente."
-        );
-
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Los IDs deben ser números válidos."
-        );
-    } catch (Exception ex) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Error: " + ex.getMessage()
-        );
-    }
-    }//GEN-LAST:event_btnGenerarPDFActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ReporteVista().setVisible(true));
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGenerarPDF;
-    private javax.swing.JButton btnSeleccionarRuta;
-    private javax.swing.JComboBox<String> cmbHojas;
-    private javax.swing.JTextField txtHojaId;
-    private javax.swing.JTextField txtRecursoId;
-    private javax.swing.JTextField txtRutaArchivo;
+    public javax.swing.JButton btnGenerarPDF;
+    public javax.swing.JButton btnSeleccionarRuta;
+    public javax.swing.JComboBox<modelo.HojaTiempo> cmbHojas;
+    private javax.swing.JLabel lblIdHoja;
+    private javax.swing.JLabel lblProgramador;
+    private javax.swing.JLabel lblProgramador1;
+    public javax.swing.JTextField txtHojaId;
+    public javax.swing.JTextField txtRecursoId;
+    public javax.swing.JTextField txtRutaArchivo;
     // End of variables declaration//GEN-END:variables
 }

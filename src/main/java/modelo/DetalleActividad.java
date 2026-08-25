@@ -62,7 +62,7 @@ public class DetalleActividad {
     }
 
     private boolean existeDuplicado() throws Exception {
-        String sql = "SELECT COUNT(*) FROM DetalleActividad WHERE fecha=? AND modulo=? AND hoja_tiempo_id=? AND id!=?";
+        String sql = "SELECT COUNT(*) FROM detalle_actividad WHERE fecha=? AND modulo=? AND hoja_tiempo_id=? AND id!=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, fecha);
@@ -78,7 +78,7 @@ public class DetalleActividad {
     // ─────── CRUD SQL ───────
     public void guardar() throws Exception {
         validar();
-        String sql = "INSERT INTO DetalleActividad (fecha, descripcion, horas, modulo, hoja_tiempo_id) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO detalle_actividad (fecha, descripcion, horas, modulo, hoja_tiempo_id) VALUES (?,?,?,?,?)";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, fecha);
@@ -95,7 +95,7 @@ public class DetalleActividad {
 
     public void actualizar() throws Exception {
         validar();
-        String sql = "UPDATE DetalleActividad SET fecha=?, descripcion=?, horas=?, modulo=? WHERE id=?";
+        String sql = "UPDATE detalle_actividad SET fecha=?, descripcion=?, horas=?, modulo=? WHERE id=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, fecha);
@@ -110,7 +110,7 @@ public class DetalleActividad {
     public void eliminar() throws Exception {
         HojaTiempo hoja = cargarHoja();
         hoja.validarParaDetalle();
-        String sql = "DELETE FROM DetalleActividad WHERE id=?";
+        String sql = "DELETE FROM detalle_actividad WHERE id=?";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -120,7 +120,7 @@ public class DetalleActividad {
 
     public static List<DetalleActividad> listarPorHoja(int idHoja) throws Exception {
         List<DetalleActividad> lista = new ArrayList<>();
-        String sql = "SELECT * FROM DetalleActividad WHERE hoja_tiempo_id=? ORDER BY fecha";
+        String sql = "SELECT * FROM detalle_actividad WHERE hoja_tiempo_id=? ORDER BY fecha";
         try (Connection conn = new ConexionBDD().conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idHoja);

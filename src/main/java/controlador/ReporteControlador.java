@@ -7,12 +7,19 @@ import modelo.HojaTiempo;
 import modelo.Recurso;
 import java.io.FileOutputStream;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  * Controlador de generación de reportes PDF.
  * Obtiene los datos del modelo y los renderiza con iTextPDF. (RF-06.4)
  */
 public class ReporteControlador {
+
+    public DefaultComboBoxModel<HojaTiempo> cargarHojas() throws Exception {
+        DefaultComboBoxModel<HojaTiempo> combo = new DefaultComboBoxModel<>();
+        for (HojaTiempo hoja : HojaTiempo.listarTodas()) combo.addElement(hoja);
+        return combo;
+    }
 
     public String generarReportePDF(int hojaTiempoId, int recursoId, String rutaArchivo) throws Exception {
         // 1. Obtener datos del modelo (RF-06.4: el modelo entrega, no genera)

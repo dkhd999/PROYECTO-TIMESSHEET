@@ -68,8 +68,9 @@ public class HojaTiempo {
 
     private void validarEstadoModificable() throws Exception {
         // RF-07.2
-        if ("Aprobada".equalsIgnoreCase(this.estado))
-            throw new Exception("No se puede modificar una hoja de tiempo ya Aprobada.");
+        if (!"Borrador".equalsIgnoreCase(this.estado)
+            && !"Rechazada".equalsIgnoreCase(this.estado))
+            throw new Exception("Solo se pueden modificar hojas en estado Borrador o Rechazada.");
     }
 
     private void validarHorasMaximas() throws Exception {
@@ -123,12 +124,20 @@ public class HojaTiempo {
         }
     }
 
-    // RF-03.5: Cambio de estado
-    public void cambiarEstado(String nuevoEstado) throws Exception {
+    // RF-03.5: Cambio de estado según el rol del usuario
+    public void cambiarEstado(String nuevoEstado, String rol) throws Exception {
         validarEstadoModificable();
-        if (!"Borrador".equalsIgnoreCase(nuevoEstado) && !"Enviada".equalsIgnoreCase(nuevoEstado)
-            && !"Aprobada".equalsIgnoreCase(nuevoEstado) && !"Rechazada".equalsIgnoreCase(nuevoEstado))
-            throw new Exception("Estado no permitido.");
+        if (rol == null || (!"Desarrollador".equalsIgnoreCase(rol)
+                && !"Supervisor".equalsIgnoreCase(rol)
+                && !"Administrador".equalsIgnoreCase(rol)))
+            throw new Exception("Rol no permitido.");
+        if ("Desarrollador".equalsIgnoreCase(rol)) {
+            if (!(("Borrador".equalsIgnoreCase(estado) || "Rechazada".equalsIgnoreCase(estado))
+                    && "Enviada".equalsIgnoreCase(nuevoEstado)))
+                throw new Exception("El desarrollador solo puede enviar o reenviar hojas en Borrador o Rechazadas.");
+        } else if (!("Enviada".equalsIgnoreCase(estado)
+                && ("Aprobada".equalsIgnoreCase(nuevoEstado) || "Rechazada".equalsIgnoreCase(nuevoEstado))))
+            throw new Exception("El supervisor o administrador solo puede aprobar o rechazar hojas Enviadas.");
         cargarDetalles();
         validarHorasMaximas();
         this.estado = nuevoEstado;
@@ -198,15 +207,40 @@ public class HojaTiempo {
     }
 
     // ─────── Getters & Setters ───────
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public int getProyectoId() { return proyectoId; }
-    public void setProyectoId(int proyectoId) { this.proyectoId = proyectoId; }
-    public int getRecursoId() { return recursoId; }
-    public void setRecursoId(int recursoId) { this.recursoId = recursoId; }
-    public String getPeriodo() { return periodo; }
-    public void setPeriodo(String periodo) { this.periodo = periodo; }
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
-    public List<DetalleActividad> getDetalles() { return detalles; }
+    public int getId() 
+        { return id; }
+    
+    public void setId(int id) 
+        { this.id = id; }
+    
+    public int getProyectoId() 
+        { return proyectoId; }
+    
+    public void setProyectoId(int proyectoId)
+    { this.proyectoId = proyectoId; }
+    
+    public int getRecursoId() 
+    { return recursoId; }
+    
+    public void setRecursoId(int recursoId)
+    { this.recursoId = recursoId; }
+    public String getPeriodo()
+    { return periodo; }
+    
+    public void setPeriodo(String periodo) 
+    { this.periodo = periodo; }
+    
+    public String getEstado() 
+    { return estado; }
+    
+    public void setEstado(String estado)
+    { this.estado = estado; }
+    
+    public List<DetalleActividad> getDetalles()
+    { return detalles; }
+
+    @Override
+    public String toString() {
+        return "Hoja " + id + " | Proyecto " + proyectoId + " | Recurso " + recursoId + " | " + periodo + " | " + estado;
+    }
 }

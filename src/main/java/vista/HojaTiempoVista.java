@@ -9,36 +9,13 @@ package vista;
  * @author Usuario
  */
 public class HojaTiempoVista extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(HojaTiempoVista.class.getName());
 
     /**
      * Creates new form HojaTiempoVista
      */
     public HojaTiempoVista() {
         initComponents();
-        cargarTablaHojas();
     }
-    
-    
-    private void cargarTablaHojas() {
-    try {
-        tblHojas.setModel(
-            new controlador.HojaTiempoControlador().obtenerTablaHojas()
-        );
-    } catch (Exception ex) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-    }
-}
-private void cargarTablaDetalles(int hojaId) {
-    try {
-        tblDetalles.setModel(
-            new controlador.HojaTiempoControlador().obtenerTablaDetalles(hojaId)
-        );
-    } catch (Exception ex) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-    }
-}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -93,10 +70,9 @@ private void cargarTablaDetalles(int hojaId) {
         lblPeriodo.setText(" Periodo");
 
         btnCrear.setText("Crear Hoja");
-        btnCrear.addActionListener(this::btnCrearActionPerformed);
 
         lblFechaDetalle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblFechaDetalle.setText("Fecha Detalle");
+        lblFechaDetalle.setText("Fecha Inicio");
 
         lblFechaDetalle1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblFechaDetalle1.setText("Descripción");
@@ -111,10 +87,8 @@ private void cargarTablaDetalles(int hojaId) {
         lblHojaId.setText("Hoja ID");
 
         lblTotalHoras.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblTotalHoras.setText("Total Horas");
 
         btnAgregarDetalle.setText("Agregar Detalle");
-        btnAgregarDetalle.addActionListener(this::btnAgregarDetalleActionPerformed);
 
         tblHojas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -145,19 +119,14 @@ private void cargarTablaDetalles(int hojaId) {
         cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Borrador", "Enviada", "Aprobada", "Rechazada", " " }));
 
         lblCostoTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblCostoTotal.setText("Costo Total:");
 
         btnCambiarEstado.setText("Cambiar Estado");
-        btnCambiarEstado.addActionListener(this::btnCambiarEstadoActionPerformed);
 
         btnEliminarHoja.setText("Eliminar Hoja");
-        btnEliminarHoja.addActionListener(this::btnEliminarHojaActionPerformed);
 
         btnActualizarDetalle.setText("Actualizar Detalle");
-        btnActualizarDetalle.addActionListener(this::btnActualizarDetalleActionPerformed);
 
         btnActualizarDetalle1.setText("Eliminar Detalle");
-        btnActualizarDetalle1.addActionListener(this::btnActualizarDetalle1ActionPerformed);
 
         btnFiltrar.setText("Filtrar");
 
@@ -169,285 +138,157 @@ private void cargarTablaDetalles(int hojaId) {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lblHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblModulo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblIDRecurso, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblIDProyecto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblFechaDetalle1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblTotalHoras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblFechaDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnFiltrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(lblCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtProyectoId)
-                            .addComponent(txtRecursoId)
-                            .addComponent(txtPeriodo)
-                            .addComponent(txtFechaDetalle)
-                            .addComponent(txtDescripcion)
-                            .addComponent(txtHoras)
-                            .addComponent(txtModulo)
-                            .addComponent(txtHojaId)
-                            .addComponent(cmbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtFiltroPeriodo))
-                        .addGap(87, 87, 87))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAgregarDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCambiarEstado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnActualizarDetalle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblTotalHoras, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblCostoTotal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnActualizarDetalle1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblModulo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblIDRecurso, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblIDProyecto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblFechaDetalle1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblFechaDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnEliminarHoja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnCrear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(87, 87, 87)))))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(367, 367, 367))
+                                    .addComponent(txtProyectoId)
+                                    .addComponent(txtRecursoId)
+                                    .addComponent(txtPeriodo, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtFechaDetalle)
+                                    .addComponent(txtDescripcion)
+                                    .addComponent(txtHoras)
+                                    .addComponent(txtModulo, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtHojaId))))
+                        .addGap(45, 45, 45))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(txtFiltroPeriodo, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                        .addGap(30, 30, 30)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCambiarEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(98, 98, 98)
+                                        .addComponent(cmbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnEliminarHoja, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(38, 38, 38)))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(53, 53, 53))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnActualizarDetalle)
+                            .addComponent(btnAgregarDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(70, 70, 70)
+                        .addComponent(btnActualizarDetalle1)
+                        .addGap(140, 140, 140))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEliminarHoja, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnFiltrar)
+                        .addComponent(txtFiltroPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCrear)))
+                .addGap(18, 18, 18)
+                .addComponent(btnCambiarEstado)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(282, 282, 282))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblIDProyecto)
-                                .addGap(24, 24, 24)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblIDRecurso)
-                                        .addGap(24, 24, 24)
-                                        .addComponent(lblPeriodo)
-                                        .addGap(24, 24, 24)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(lblFechaDetalle)
-                                            .addComponent(txtFechaDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(25, 25, 25)
-                                        .addComponent(lblFechaDetalle1))
-                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(21, 21, 21)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblHora)
-                                    .addComponent(txtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(220, 220, 220)
+                                .addComponent(txtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
+                                .addComponent(txtModulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblModulo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtModulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblIDProyecto)
+                                    .addComponent(txtProyectoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(22, 22, 22)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblIDRecurso)
+                                    .addComponent(txtRecursoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(22, 22, 22)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblPeriodo)
+                                    .addComponent(txtPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(22, 22, 22)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblFechaDetalle)
+                                    .addComponent(txtFechaDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(23, 23, 23)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblFechaDetalle1)
+                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(19, 19, 19)
+                                .addComponent(lblHora)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblModulo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(26, 26, 26)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtProyectoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtRecursoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addComponent(lblTotalHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtFiltroPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnFiltrar))
-                        .addGap(38, 38, 38)
-                        .addComponent(lblCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(147, 147, 147)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnActualizarDetalle)
-                            .addComponent(btnActualizarDetalle1))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCambiarEstado)
-                            .addComponent(btnEliminarHoja))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAgregarDetalle)
-                            .addComponent(btnCrear))))
-                .addGap(22, 22, 22))
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnActualizarDetalle1)
+                    .addComponent(btnActualizarDetalle))
+                .addGap(31, 31, 31)
+                .addComponent(btnAgregarDetalle)
+                .addContainerGap(310, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-       try {
-    new controlador.HojaTiempoControlador().guardarHoja(
-        Integer.parseInt(txtProyectoId.getText()),
-        Integer.parseInt(txtRecursoId.getText()),
-        txtPeriodo.getText()
-    );
-    javax.swing.JOptionPane.showMessageDialog(this, "Hoja de Tiempo creada en estado Borrador.");
-    cargarTablaHojas();
-} catch (Exception ex) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-} 
-    }//GEN-LAST:event_btnCrearActionPerformed
-
-    private void btnAgregarDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarDetalleActionPerformed
-       try {
-    int hojaId = Integer.parseInt(txtHojaId.getText());
-    new controlador.HojaTiempoControlador().guardarDetalle(
-        txtFechaDetalle.getText(), txtDescripcion.getText(),
-        txtHoras.getText(), txtModulo.getText(), hojaId
-    );
-    // Actualizar total de horas en pantalla (RF-V03)
-    double total = new controlador.HojaTiempoControlador().calcularTotalHoras(hojaId);
-    lblTotalHoras.setText("Total horas: " + total);
-    cargarTablaDetalles(hojaId);
-} catch (Exception ex) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-}
-    }//GEN-LAST:event_btnAgregarDetalleActionPerformed
-
-    private void btnCambiarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarEstadoActionPerformed
-    int fila = tblHojas.getSelectedRow();
-
-    if (fila == -1) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Selecciona una hoja de tiempo."
-        );
-        return;
-    }
-
-    try {
-        int idHoja = (int) tblHojas.getValueAt(fila, 0);
-        int proyectoId = (int) tblHojas.getValueAt(fila, 1);
-        int recursoId = (int) tblHojas.getValueAt(fila, 2);
-        String periodo = tblHojas.getValueAt(fila, 3).toString();
-
-        new controlador.HojaTiempoControlador().cambiarEstado(
-            idHoja,
-            proyectoId,
-            recursoId,
-            periodo,
-            cmbEstado.getSelectedItem().toString()
-        );
-
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Estado actualizado correctamente."
-        );
-
-        cargarTablaHojas();
-
-    } catch (Exception ex) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Error: " + ex.getMessage()
-        );
-    }
-    }//GEN-LAST:event_btnCambiarEstadoActionPerformed
-
-    private void btnEliminarHojaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarHojaActionPerformed
-        int fila = tblHojas.getSelectedRow();
-
-    if (fila == -1) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Selecciona una hoja de tiempo."
-        );
-        return;
-    }
-
-    try {
-        int idHoja = (int) tblHojas.getValueAt(fila, 0);
-        int proyectoId = (int) tblHojas.getValueAt(fila, 1);
-        int recursoId = (int) tblHojas.getValueAt(fila, 2);
-        String periodo = tblHojas.getValueAt(fila, 3).toString();
-        String estado = tblHojas.getValueAt(fila, 4).toString();
-
-        new controlador.HojaTiempoControlador().eliminarHoja(
-            idHoja,
-            proyectoId,
-            recursoId,
-            periodo,
-            estado
-        );
-
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Hoja de tiempo inactivada correctamente."
-        );
-
-        cargarTablaHojas();
-
-    } catch (Exception ex) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Error: " + ex.getMessage()
-        );
-    }
-
-    }//GEN-LAST:event_btnEliminarHojaActionPerformed
-
-    private void btnActualizarDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarDetalleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnActualizarDetalleActionPerformed
-
-    private void btnActualizarDetalle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarDetalle1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnActualizarDetalle1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new HojaTiempoVista().setVisible(true));
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizarDetalle;
-    private javax.swing.JButton btnActualizarDetalle1;
-    private javax.swing.JButton btnAgregarDetalle;
-    private javax.swing.JButton btnCambiarEstado;
-    private javax.swing.JButton btnCrear;
-    private javax.swing.JButton btnEliminarHoja;
-    private javax.swing.JButton btnFiltrar;
-    private javax.swing.JComboBox<String> cmbEstado;
+    public javax.swing.JButton btnActualizarDetalle;
+    public javax.swing.JButton btnActualizarDetalle1;
+    public javax.swing.JButton btnAgregarDetalle;
+    public javax.swing.JButton btnCambiarEstado;
+    public javax.swing.JButton btnCrear;
+    public javax.swing.JButton btnEliminarHoja;
+    public javax.swing.JButton btnFiltrar;
+    public javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lblCostoTotal;
+    public javax.swing.JLabel lblCostoTotal;
     private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblFechaDetalle;
     private javax.swing.JLabel lblFechaDetalle1;
@@ -457,17 +298,17 @@ private void cargarTablaDetalles(int hojaId) {
     private javax.swing.JLabel lblIDRecurso;
     private javax.swing.JLabel lblModulo;
     private javax.swing.JLabel lblPeriodo;
-    private javax.swing.JLabel lblTotalHoras;
-    private javax.swing.JTable tblDetalles;
-    private javax.swing.JTable tblHojas;
-    private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtFechaDetalle;
-    private javax.swing.JTextField txtFiltroPeriodo;
-    private javax.swing.JTextField txtHojaId;
-    private javax.swing.JTextField txtHoras;
-    private javax.swing.JTextField txtModulo;
-    private javax.swing.JTextField txtPeriodo;
-    private javax.swing.JTextField txtProyectoId;
-    private javax.swing.JTextField txtRecursoId;
+    public javax.swing.JLabel lblTotalHoras;
+    public javax.swing.JTable tblDetalles;
+    public javax.swing.JTable tblHojas;
+    public javax.swing.JTextField txtDescripcion;
+    public javax.swing.JTextField txtFechaDetalle;
+    public javax.swing.JTextField txtFiltroPeriodo;
+    public javax.swing.JTextField txtHojaId;
+    public javax.swing.JTextField txtHoras;
+    public javax.swing.JTextField txtModulo;
+    public javax.swing.JTextField txtPeriodo;
+    public javax.swing.JTextField txtProyectoId;
+    public javax.swing.JTextField txtRecursoId;
     // End of variables declaration//GEN-END:variables
 }
