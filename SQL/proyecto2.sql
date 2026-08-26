@@ -4,6 +4,7 @@ USE proyecto_2;
 DROP TABLE IF EXISTS detalle_actividad;
 DROP TABLE IF EXISTS hoja_tiempo;
 DROP TABLE IF EXISTS proyecto_recurso;
+DROP TABLE IF EXISTS usuario;
 DROP TABLE IF EXISTS recurso;
 DROP TABLE IF EXISTS proyecto;
 
@@ -31,6 +32,20 @@ CREATE TABLE recurso (
     PRIMARY KEY (id),
     UNIQUE KEY uk_recurso_correo (correo),
     CONSTRAINT ck_recurso_tarifa CHECK (tarifa_base >= 0)
+) ENGINE=InnoDB;
+
+CREATE TABLE usuario (
+    id INT NOT NULL AUTO_INCREMENT,
+    usuario VARCHAR(50) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    rol ENUM('Administrador', 'Desarrollador') NOT NULL,
+    tipo ENUM('Gestor', 'Recurso') NOT NULL,
+    recurso_id INT NULL,
+    estado ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_usuario_nombre (usuario),
+    CONSTRAINT fk_usuario_recurso FOREIGN KEY (recurso_id) REFERENCES recurso(id),
+    CONSTRAINT ck_usuario_tipo_recurso CHECK ((tipo='Recurso' AND recurso_id IS NOT NULL) OR (tipo='Gestor' AND recurso_id IS NULL))
 ) ENGINE=InnoDB;
 
 CREATE TABLE proyecto_recurso (
@@ -64,3 +79,10 @@ CREATE TABLE detalle_actividad (
     CONSTRAINT fk_detalle_hoja FOREIGN KEY (hoja_tiempo_id) REFERENCES hoja_tiempo(id) ON DELETE CASCADE,
     CONSTRAINT ck_detalle_horas CHECK (horas > 0 AND horas <= 24)
 ) ENGINE=InnoDB;
+
+INSERT INTO recurso (nombre, correo, rol, tarifa_base, tipo, estado)
+VALUES ('Desarrollador de prueba', 'desarrollador@proyecto.com', 'Desarrollador', 25.00, 'Junior', 'Activo');
+
+INSERT INTO usuario (usuario, contrasena, rol, tipo, recurso_id, estado) VALUES
+('admin', 'admin123', 'Administrador', 'Gestor', NULL, 'Activo'),
+('desarrollador', 'dev123', 'Desarrollador', 'Recurso', 1, 'Activo');

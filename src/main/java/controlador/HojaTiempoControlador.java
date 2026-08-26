@@ -14,14 +14,27 @@ import vista.HojaTiempoVista;
 public class HojaTiempoControlador {
 
     private final HojaTiempoVista vista;
-    private final String rolUsuario = "Desarrollador";
+    private final String rolUsuario;
+    private final Integer recursoUsuarioId;
 
     public HojaTiempoControlador() {
         this.vista = null;
+        this.rolUsuario = "Desarrollador";
+        this.recursoUsuarioId = null;
     }
 
     public HojaTiempoControlador(HojaTiempoVista vista) {
+        this(vista, "Desarrollador", null);
+    }
+
+    public HojaTiempoControlador(HojaTiempoVista vista, String rolUsuario) {
+        this(vista, rolUsuario, null);
+    }
+
+    public HojaTiempoControlador(HojaTiempoVista vista, String rolUsuario, Integer recursoUsuarioId) {
         this.vista = vista;
+        this.rolUsuario = rolUsuario;
+        this.recursoUsuarioId = recursoUsuarioId;
         vista.btnCrear.addActionListener(event -> guardarHojaDesdeVista());
         vista.btnAgregarDetalle.addActionListener(event -> guardarDetalleDesdeVista());
         vista.btnCambiarEstado.addActionListener(event -> cambiarEstadoDesdeVista());
@@ -40,8 +53,9 @@ public class HojaTiempoControlador {
 
     private void guardarHojaDesdeVista() {
         try {
-                guardarHoja(Integer.parseInt(vista.txtProyectoId.getText().trim()),
-                    Integer.parseInt(vista.txtRecursoId.getText().trim()), vista.txtPeriodo.getText());
+                int recursoId = Integer.parseInt(vista.txtRecursoId.getText().trim());
+                validarRecursoUsuario(recursoId);
+                guardarHoja(Integer.parseInt(vista.txtProyectoId.getText().trim()), recursoId, vista.txtPeriodo.getText());
             mostrar("Hoja de Tiempo creada en estado Borrador.");
             cargarTablaEnVista(null);
         } catch (Exception ex) { mostrarError(ex); }
@@ -123,7 +137,7 @@ public class HojaTiempoControlador {
     }
 
     private void cargarTablaEnVista(String periodo) throws Exception {
-        vista.tblHojas.setModel(cargarHojas(periodo));
+        vista.tblHojas.setModel(cargarHojas(periodo, recursoUsuarioId));
         vista.tblDetalles.setModel(new DefaultTableModel());
         vista.lblTotalHoras.setText("Total horas: 0");
         vista.lblCostoTotal.setText("Costo total: $0.00");
@@ -143,6 +157,11 @@ public class HojaTiempoControlador {
         int fila = vista.tblHojas.getSelectedRow();
         if (fila < 0) throw new Exception("Selecciona una hoja de tiempo.");
         return fila;
+    }
+
+    private void validarRecursoUsuario(int recursoId) throws Exception {
+        if (recursoUsuarioId != null && recursoUsuarioId.intValue() != recursoId)
+            throw new Exception("No puedes crear una hoja para otro recurso.");
     }
 
     private void mostrar(String mensaje) { javax.swing.JOptionPane.showMessageDialog(vista, mensaje); }
@@ -194,7 +213,11 @@ public class HojaTiempoControlador {
     }
 
     public DefaultTableModel cargarHojas(String periodo) throws Exception {
-        List<HojaTiempo> hojas = listarPorFiltro(null, null,
+        return cargarHojas(periodo, null);
+    }
+
+    public DefaultTableModel cargarHojas(String periodo, Integer recursoId) throws Exception {
+        List<HojaTiempo> hojas = listarPorFiltro(null, recursoId,
                 periodo == null || periodo.trim().isEmpty() ? null : periodo.trim());
         DefaultTableModel modelo = new DefaultTableModel(
                 new String[]{"ID", "Proyecto ID", "Recurso ID", "Periodo", "Estado"}, 0) {
