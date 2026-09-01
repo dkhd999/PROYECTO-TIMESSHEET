@@ -30,14 +30,12 @@ public class AsignacionVista extends javax.swing.JFrame {
         btnAsignar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAsignaciones = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        cmbProyectos.setModel(new javax.swing.DefaultComboBoxModel<modelo.Proyecto>());
-
-        cmbRecursos.setModel(new javax.swing.DefaultComboBoxModel<modelo.Recurso>());
-
         btnAsignar.setText("Asignar");
+
         tblAsignaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -50,6 +48,9 @@ public class AsignacionVista extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tblAsignaciones);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Asignar Desarrollador");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,7 +65,10 @@ public class AsignacionVista extends javax.swing.JFrame {
                         .addComponent(cmbRecursos, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(155, 155, 155)
-                        .addComponent(btnAsignar)))
+                        .addComponent(btnAsignar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(103, 103, 103)
+                        .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
@@ -72,27 +76,38 @@ public class AsignacionVista extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(117, 117, 117)
+                        .addComponent(jLabel1)
+                        .addGap(63, 63, 63)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmbProyectos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbRecursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(120, 120, 120)
                         .addComponent(btnAsignar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(123, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public javax.swing.JButton getBtnAsignar() { return btnAsignar; }
-    public javax.swing.JComboBox<modelo.Proyecto> getCmbProyectos() { return cmbProyectos; }
-    public javax.swing.JComboBox<modelo.Recurso> getCmbRecursos() { return cmbRecursos; }
-    public javax.swing.JTable getTblAsignaciones() { return tblAsignaciones; }
+    public javax.swing.JButton getBtnAsignar() {
+        return btnAsignar;
+    }
+
+    public javax.swing.JComboBox<modelo.Proyecto> getCmbProyectos() {
+        return cmbProyectos;
+    }
+
+    public javax.swing.JComboBox<modelo.Recurso> getCmbRecursos() {
+        return cmbRecursos;
+    }
+
+    public javax.swing.JTable getTblAsignaciones() {
+        return tblAsignaciones;
+    }
 
     /**
      * @param args the command line arguments
@@ -123,6 +138,7 @@ public class AsignacionVista extends javax.swing.JFrame {
     private javax.swing.JButton btnAsignar;
     private javax.swing.JComboBox<modelo.Proyecto> cmbProyectos;
     private javax.swing.JComboBox<modelo.Recurso> cmbRecursos;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblAsignaciones;
     // End of variables declaration//GEN-END:variables

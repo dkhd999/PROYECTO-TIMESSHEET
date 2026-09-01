@@ -24,12 +24,14 @@ CREATE TABLE proyecto (
 CREATE TABLE recurso (
     id INT NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
+    cedula VARCHAR(10) NOT NULL,
     correo VARCHAR(150) NOT NULL,
     rol VARCHAR(50) NOT NULL,
     tarifa_base DECIMAL(10,2) NOT NULL,
     tipo ENUM('Junior', 'Senior') NOT NULL,
     estado ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo',
     PRIMARY KEY (id),
+    UNIQUE KEY uk_recurso_cedula (cedula),
     UNIQUE KEY uk_recurso_correo (correo),
     CONSTRAINT ck_recurso_tarifa CHECK (tarifa_base >= 0)
 ) ENGINE=InnoDB;
@@ -80,8 +82,8 @@ CREATE TABLE detalle_actividad (
     CONSTRAINT ck_detalle_horas CHECK (horas > 0 AND horas <= 24)
 ) ENGINE=InnoDB;
 
-INSERT INTO recurso (nombre, correo, rol, tarifa_base, tipo, estado)
-VALUES ('Desarrollador de prueba', 'desarrollador@proyecto.com', 'Desarrollador', 25.00, 'Junior', 'Activo');
+INSERT INTO recurso (nombre, cedula, correo, rol, tarifa_base, tipo, estado)
+VALUES ('Desarrollador de prueba', '1712345678', 'desarrollador@proyecto.com', 'Desarrollador', 25.00, 'Junior', 'Activo');
 
 INSERT INTO usuario (usuario, contrasena, rol, tipo, recurso_id, estado) VALUES
 ('admin', 'admin123', 'Administrador', 'Gestor', NULL, 'Activo'),

@@ -8,7 +8,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
-        <exec.mainClass>com.mycompany.proyecto_2mvc.Proyecto_2MVC</exec.mainClass>
+        <exec.mainClass>vista.Main</exec.mainClass>
     </properties>
     <dependencies>
         <!-- MySQL Connector -->

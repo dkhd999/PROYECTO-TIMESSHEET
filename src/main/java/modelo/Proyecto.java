@@ -143,6 +143,21 @@ public class Proyecto {
         return lista;
     }
 
+    public static List<Proyecto> listarPorRecurso(int recursoId) throws Exception {
+        List<Proyecto> lista = new ArrayList<>();
+        String sql = "SELECT p.* FROM proyecto p JOIN proyecto_recurso pr ON pr.proyecto_id=p.id "
+                   + "WHERE pr.recurso_id=? AND p.estado='Activo' ORDER BY p.nombre";
+        try (Connection conn = new ConexionBDD().conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, recursoId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) lista.add(new Proyecto(rs.getInt("id"), rs.getString("codigo"),
+                    rs.getString("nombre"), rs.getString("cliente"), rs.getString("fecha_inicio"),
+                    rs.getString("fecha_fin_estimada"), rs.getString("estado")));
+            }
+        }
+        return lista;
+    }
+
     public static void asignarRecurso(int proyectoId, int recursoId) throws Exception {
         String sql = "INSERT INTO proyecto_recurso (proyecto_id, recurso_id) VALUES (?, ?)";
         try (Connection conn = new ConexionBDD().conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {

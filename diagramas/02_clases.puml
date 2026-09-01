@@ -1,0 +1,194 @@
+@startuml GestionProyectos_Clases
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FFFDE7
+  BorderColor #F57F17
+  ArrowColor #333
+  HeaderBackgroundColor #FFE082
+}
+skinparam package {
+  BackgroundColor #F5F5F5
+  BorderColor #9E9E9E
+}
+
+title Diagrama de Clases - Gestion de Proyectos y Registro de Horas
+
+package "modelo" {
+  abstract class Recurso {
+    - id : int
+    - nombre : String
+    - cedula : String
+    - correo : String
+    - rol : String
+    - tarifaBase : double
+    - tipo : String
+    - estado : String
+    + {abstract} calcularTarifaHora() : double
+    + calcularCostoHoras(horas : double) : double
+    + guardar(usuario : String, contrasena : String) : void
+    + actualizar() : void
+    + eliminar() : void
+    + activar() : void
+    + {static} listarTodos() : List<Recurso>
+    + {static} listarActivos() : List<Recurso>
+    + getCedula() : String
+    + setCedula(cedula : String) : void
+  }
+
+  class DesarrolladorJunior {
+    + calcularTarifaHora() : double
+  }
+
+  class DesarrolladorSenior {
+    + calcularTarifaHora() : double
+  }
+
+  class Proyecto {
+    - id : int
+    - codigo : String
+    - nombre : String
+    - cliente : String
+    - fechaInicio : String
+    - fechaFin : String
+    - estado : String
+    + guardar() : void
+    + actualizar() : void
+    + eliminar() : void
+    + activar() : void
+    + {static} listarTodos() : List<Proyecto>
+    + {static} asignarRecurso(proyectoId : int, recursoId : int) : void
+  }
+
+  class HojaTiempo {
+    - id : int
+    - proyectoId : int
+    - recursoId : int
+    - periodo : String
+    - estado : String
+    - detalles : List<DetalleActividad>
+    + cargarDetalles() : void
+    + calcularTotalHoras() : double
+    + calcularCostoTotal(recurso : Recurso) : double
+    + cambiarEstado(nuevoEstado : String, rol : String) : void
+    + guardar() : void
+    + eliminar() : void
+    + {static} listarTodas() : List<HojaTiempo>
+    + {static} listarPorFiltro(...) : List<HojaTiempo>
+  }
+
+  class DetalleActividad {
+    - id : int
+    - fecha : String
+    - descripcion : String
+    - horas : double
+    - modulo : String
+    - hojaTiempoId : int
+    + guardar() : void
+    + actualizar() : void
+    + eliminar() : void
+    + {static} listarPorHoja(idHoja : int) : List<DetalleActividad>
+  }
+
+  class Login {
+    - id : int
+    - usuario : String
+    - contrasena : String
+    - rol : String
+    - tipo : String
+    - recursoId : Integer
+    + {static} autenticar(usuario : String, contrasena : String) : Login
+  }
+
+  class ValidarCedula {
+    + {static} validarCedulaEcuatoriana(cedula : String) : boolean
+  }
+}
+
+package "controlador" {
+  class ConexionBDD {
+    + conectar() : Connection
+  }
+
+  class LoginControlador {
+    - vista : LoginVista
+    + ingresar() : void
+    + abrirVistas(usuario : Login) : void
+  }
+
+  class RecursoControlador {
+    - vista : RecursoVista
+    + guardar(...) : void
+    + actualizar(...) : void
+    + eliminar(...) : void
+    + activar(...) : void
+    + cargarTabla() : void
+  }
+
+  class ProyectoControlador {
+    - vista : ProyectoVista
+    + guardar(...) : void
+    + eliminar(...) : void
+    + cargarTabla() : void
+  }
+
+  class HojaTiempoControlador {
+    - vista : HojaTiempoVista
+    + cargarTabla() : void
+  }
+
+  class ReporteControlador {
+    - vista : ReporteVista
+  }
+
+  class ReportePDF {
+    + generarReportePDF(hojaId : int, recursoId : int, ruta : String) : String
+  }
+
+  class NavegacionControlador {
+    + {static} configurar(vista, siguiente, regresar) : void
+  }
+}
+
+package "vista" {
+  class LoginVista extends JFrame
+  class RecursoVista extends JFrame
+  class ProyectoVista extends JFrame
+  class HojaTiempoVista extends JFrame
+  class AsignacionVista extends JFrame
+  class ReporteVista extends JFrame
+  class MenuVista extends JFrame
+}
+
+' ── Relaciones modelo ──
+DesarrolladorJunior --|> Recurso
+DesarrolladorSenior --|> Recurso
+Recurso --> ValidarCedula : usa para validar
+HojaTiempo "1" --> "1..*" DetalleActividad : contiene
+HojaTiempo "1" --> "1" Proyecto
+HojaTiempo "1" --> "1" Recurso
+Login --> Recurso : referencia
+
+' ── Relaciones controlador → modelo ──
+RecursoControlador ..> Recurso
+RecursoControlador ..> ValidarCedula
+ProyectoControlador ..> Proyecto
+HojaTiempoControlador ..> HojaTiempo
+ReportePDF ..> HojaTiempo
+ReportePDF ..> DetalleActividad
+ReportePDF ..> Recurso
+LoginControlador ..> Login
+ConexionBDD <.. Recurso
+ConexionBDD <.. Proyecto
+ConexionBDD <.. HojaTiempo
+ConexionBDD <.. DetalleActividad
+ConexionBDD <.. Login
+
+' ── Relaciones controlador → vista ──
+LoginControlador --> LoginVista
+RecursoControlador --> RecursoVista
+ProyectoControlador --> ProyectoVista
+HojaTiempoControlador --> HojaTiempoVista
+ReporteControlador --> ReporteVista
+NavegacionControlador ..> JFrame : configura navegacion
+
+@enduml

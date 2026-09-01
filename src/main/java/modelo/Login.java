@@ -49,9 +49,23 @@ public class Login {
 		}
 	}
 
-	public int getId() { return id; }
-	public String getUsuario() { return usuario; }
-	public String getRol() { return rol; }
-	public String getTipo() { return tipo; }
-	public Integer getRecursoId() { return recursoId; }
+	   public int getId() {
+        return id;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public Integer getRecursoId() {
+        return recursoId;
+    }
 }

@@ -1,0 +1,88 @@
+@startuml GestionProyectos_CasosDeUso
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #F1F8E9
+  BorderColor #558B2F
+  ArrowColor #333
+}
+skinparam actor {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+}
+
+title Diagrama de Casos de Uso - Gestion de Proyectos y Registro de Horas
+
+actor "Gestor\n(Gerente)" as Gestor
+actor "Desarrollador" as Dev
+
+rectangle "Sistema de Gestion de Proyectos y Timesheets" {
+
+  ' ── Autenticación ──
+  usecase "Iniciar Sesion" as UC1
+  usecase "Validar Credenciales" as UC1a
+
+  ' ── Gestión de Recursos ──
+  usecase "Registrar Desarrollador" as UC2
+  usecase "Validar Cedula" as UC2a
+  usecase "Inhabilitar Desarrollador" as UC3
+  usecase "Habilitar Desarrollador" as UC4
+  usecase "Listar Recursos" as UC5
+
+  ' ── Gestión de Proyectos ──
+  usecase "Crear Proyecto" as UC6
+  usecase "Inhabilitar Proyecto" as UC7
+  usecase "Habilitar Proyecto" as UC8
+  usecase "Asignar Recurso a Proyecto" as UC9
+  usecase "Listar Proyectos" as UC10
+
+  ' ── Hoja de Tiempo ──
+  usecase "Crear Hoja de Tiempo" as UC11
+  usecase "Registrar Actividades" as UC12
+  usecase "Enviar Hoja de Tiempo" as UC13
+  usecase "Aprobar Hoja de Tiempo" as UC14
+  usecase "Rechazar Hoja de Tiempo" as UC15
+  usecase "Eliminar Hoja de Tiempo" as UC16
+
+  ' ── Reportes ──
+  usecase "Generar Reporte PDF" as UC17
+  usecase "Ver Reporte Mensual" as UC18
+}
+
+' ── Relaciones Gestor ──
+Gestor --> UC1
+Gestor --> UC2
+Gestor --> UC3
+Gestor --> UC4
+Gestor --> UC5
+Gestor --> UC6
+Gestor --> UC7
+Gestor --> UC8
+Gestor --> UC9
+Gestor --> UC10
+Gestor --> UC14
+Gestor --> UC15
+Gestor --> UC17
+Gestor --> UC18
+
+' ── Relaciones Desarrollador ──
+Dev --> UC1
+Dev --> UC11
+Dev --> UC12
+Dev --> UC13
+Dev --> UC16
+Dev --> UC17
+Dev --> UC18
+
+' ── Include / Extend ──
+UC1 ..> UC1a : <<include>>
+UC2 ..> UC2a : <<include>>
+UC2a ..> ValidarCedula : <<include>>
+UC6 ..> UC10 : <<include>>
+UC12 ..> UC11 : <<include>>
+UC14 ..> UC11 : <<include>>
+UC15 ..> UC11 : <<include>>
+UC18 ..> UC17 : <<extend>>
+
+@enduml

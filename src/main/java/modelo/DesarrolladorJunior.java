@@ -8,8 +8,8 @@ public class DesarrolladorJunior extends Recurso {
         this.rol = "Desarrollador";
     }
 
-    public DesarrolladorJunior(int id, String nombre, String correo, double tarifaBase, String estado) {
-        super(id, nombre, correo, "Desarrollador", tarifaBase, "Junior", estado);
+    public DesarrolladorJunior(int id, String nombre, String cedula, String correo, double tarifaBase, String estado) {
+        super(id, nombre, cedula, correo, "Desarrollador", tarifaBase, "Junior", estado);
     }
 
     // RF-02.2: Tarifa fija sin bono

@@ -1,19 +1,83 @@
 package controlador;
 
 import modelo.Proyecto;
+import vista.ProyectoVista;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Controlador de Proyectos.
- * La Vista llama a estos métodos directamente; no tiene lógica propia.
+ * Controlador único de Proyectos.
+ * Gestiona los eventos de la vista y la preparación de datos para la interfaz y el modelo.
  */
 public class ProyectoControlador {
 
-    // ─────── GUARDAR (nuevo) ───────
-    public void guardar(String codigo, String nombre, String cliente,
-                        String fechaInicio, String fechaFin) throws Exception {
+    private ProyectoVista vista;
+
+    // Constructor por defecto (para llamadas de utilidades o combos desde otros controladores)
+    public ProyectoControlador() {}
+
+    // Constructor con Vista (vinculará los eventos e inicializará la tabla)
+    public ProyectoControlador(ProyectoVista vista) {
+        this.vista = vista;
+        inicializarEventos();
+        cargarTabla();
+    }
+
+    private void inicializarEventos() {
+        if (vista == null) return;
+        vista.getBtnGuardar().addActionListener(event -> guardarDesdeVista());
+        vista.getBtnEliminar().addActionListener(event -> eliminarDesdeVista());
+        vista.getBtnHabilitar().addActionListener(event -> habilitarDesdeVista());
+    }
+
+    // ─────── ACCIONES DESDE LA VISTA ───────
+    public void cargarTabla() {
+        if (vista == null) return;
+        try {
+            vista.getTblProyectos().setModel(obtenerTablaProyectos());
+        } catch (Exception ex) {
+            mostrarError(ex);
+        }
+    }
+
+    private void guardarDesdeVista() {
+        try {
+            guardar(vista.getTxtCodigo().getText(), vista.getTxtNombre().getText(),
+                    vista.getTxtCliente().getText(), vista.getTxtFechaInicio().getText(), 
+                    vista.getTxtFechaFin().getText());
+            mostrar("Proyecto guardado con éxito.");
+            limpiarCampos();
+            cargarTabla();
+        } catch (Exception ex) {
+            mostrarError(ex);
+        }
+    }
+
+    private void eliminarDesdeVista() {
+        try {
+            Proyecto proyecto = proyectoSeleccionado();
+            proyecto.eliminar();
+            mostrar("Proyecto inactivado.");
+            cargarTabla();
+        } catch (Exception ex) {
+            mostrarError(ex);
+        }
+    }
+
+    private void habilitarDesdeVista() {
+        try {
+            Proyecto proyecto = proyectoSeleccionado();
+            proyecto.activar();
+            mostrar("Proyecto habilitado correctamente.");
+            cargarTabla();
+        } catch (Exception ex) {
+            mostrarError(ex);
+        }
+    }
+
+    // ─────── MÉTODOS CRUD DIRECTOS ───────
+    public void guardar(String codigo, String nombre, String cliente, String fechaInicio, String fechaFin) throws Exception {
         Proyecto p = new Proyecto();
         p.setCodigo(codigo.trim());
         p.setNombre(nombre.trim());
@@ -23,28 +87,22 @@ public class ProyectoControlador {
         p.guardar();
     }
 
-    // ─────── ACTUALIZAR ───────
-    public void actualizar(int id, String codigo, String nombre, String cliente,
-                           String fechaInicio, String fechaFin, String estado) throws Exception {
-        Proyecto p = new Proyecto(id, codigo.trim(), nombre.trim(), cliente.trim(),
-                                  fechaInicio.trim(), fechaFin.trim(), estado);
+    public void actualizar(int id, String codigo, String nombre, String cliente, String fechaInicio, String fechaFin, String estado) throws Exception {
+        Proyecto p = new Proyecto(id, codigo.trim(), nombre.trim(), cliente.trim(), fechaInicio.trim(), fechaFin.trim(), estado);
         p.actualizar();
     }
 
-    // ─────── ELIMINAR (inactivar) ───────
-    public void eliminar(int id, String codigo, String nombre, String cliente,
-                         String fechaInicio, String fechaFin, String estado) throws Exception {
+    public void eliminar(int id, String codigo, String nombre, String cliente, String fechaInicio, String fechaFin, String estado) throws Exception {
         Proyecto p = new Proyecto(id, codigo, nombre, cliente, fechaInicio, fechaFin, estado);
         p.eliminar();
     }
 
-    public void activar(int id, String codigo, String nombre, String cliente,
-                        String fechaInicio, String fechaFin) throws Exception {
+    public void activar(int id, String codigo, String nombre, String cliente, String fechaInicio, String fechaFin) throws Exception {
         Proyecto p = new Proyecto(id, codigo, nombre, cliente, fechaInicio, fechaFin, "Inactivo");
         p.activar();
     }
 
-    // ─────── LLENAR TABLA ───────
+    // ─────── GENERADORES DE MODELOS PARA SWING ───────
     public DefaultTableModel obtenerTablaProyectos() throws Exception {
         String[] columnas = {"ID", "Código", "Nombre", "Cliente", "Fecha Inicio", "Fecha Fin", "Estado"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
@@ -59,7 +117,6 @@ public class ProyectoControlador {
         return modelo;
     }
 
-    // ─────── LLENAR COMBOBOX (para otras vistas) ───────
     public DefaultComboBoxModel<Proyecto> obtenerComboProyectos() throws Exception {
         DefaultComboBoxModel<Proyecto> combo = new DefaultComboBoxModel<>();
         for (Proyecto p : Proyecto.listarTodos()) {
@@ -68,7 +125,9 @@ public class ProyectoControlador {
         return combo;
     }
 
-    public Proyecto consultar(int id) throws Exception { return Proyecto.consultar(id); }
+    public Proyecto consultar(int id) throws Exception { 
+        return Proyecto.consultar(id); 
+    }
 
     public void asignarRecurso(int proyectoId, int recursoId) throws Exception {
         Proyecto.asignarRecurso(proyectoId, recursoId);
@@ -82,6 +141,29 @@ public class ProyectoControlador {
         for (Object[] fila : Proyecto.listarAsignaciones()) modelo.addRow(fila);
         return modelo;
     }
-    
-    
+
+    // ─────── AUXILIARES DE INTERFAZ ───────
+    private Proyecto proyectoSeleccionado() throws Exception {
+        int fila = vista.getTblProyectos().getSelectedRow();
+        if (fila < 0) throw new Exception("Selecciona un proyecto de la tabla.");
+        return new Proyecto((int) vista.getTblProyectos().getValueAt(fila, 0),
+            vista.getTblProyectos().getValueAt(fila, 1).toString(),
+            vista.getTblProyectos().getValueAt(fila, 2).toString(),
+            vista.getTblProyectos().getValueAt(fila, 3).toString(),
+            vista.getTblProyectos().getValueAt(fila, 4).toString(),
+            vista.getTblProyectos().getValueAt(fila, 5).toString(),
+            vista.getTblProyectos().getValueAt(fila, 6).toString());
+    }
+
+    private void limpiarCampos() {
+        vista.getTxtCodigo().setText("");
+        vista.getTxtNombre().setText("");
+        vista.getTxtCliente().setText("");
+        vista.getTxtFechaInicio().setText("");
+        vista.getTxtFechaFin().setText("");
+        vista.getTblProyectos().clearSelection();
+    }
+
+    private void mostrar(String mensaje) { javax.swing.JOptionPane.showMessageDialog(vista, mensaje); }
+    private void mostrarError(Exception ex) { javax.swing.JOptionPane.showMessageDialog(vista, "Error: " + ex.getMessage()); }
 }

@@ -23,85 +23,95 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="lblTotalHoras" alignment="0" max="32767" attributes="0"/>
-                          <Component id="lblCostoTotal" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lblHojaId" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
-                                  <Component id="lblModulo" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
-                                  <Component id="lblHora" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
-                                  <Component id="lblPeriodo" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
-                                  <Component id="lblIDRecurso" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
-                                  <Component id="lblIDProyecto" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="lblFechaDetalle1" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="lblFechaDetalle" alignment="0" min="-2" pref="99" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtProyectoId" max="32767" attributes="0"/>
-                                  <Component id="txtRecursoId" max="32767" attributes="0"/>
-                                  <Component id="txtPeriodo" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="txtFechaDetalle" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txtDescripcion" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txtHoras" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txtModulo" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="txtHojaId" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="btnFiltrar" min="-2" pref="99" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                      <Component id="txtFiltroPeriodo" pref="132" max="32767" attributes="0"/>
-                      <EmptySpace min="30" pref="30" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="jScrollPane1" min="-2" pref="385" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnCambiarEstado" min="-2" pref="124" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="lblEstado" min="-2" pref="75" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
-                                      <Component id="cmbEstado" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="btnCrear" min="-2" pref="115" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="btnEliminarHoja" min="-2" pref="115" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                          </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lblHojaId" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
+                          <Component id="lblModulo" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
+                          <Component id="lblHora" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
+                          <Component id="lblPeriodo" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
+                          <Component id="lblIDRecurso" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
+                          <Component id="lblIDProyecto" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblFechaDetalle1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblFechaDetalle" alignment="0" min="-2" pref="99" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="txtModulo" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txtHoras" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="cmbProyectoAsignado" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="txtPeriodo" alignment="0" pref="193" max="32767" attributes="0"/>
+                                  <Component id="txtRecursoId" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="txtHojaId" max="32767" attributes="0"/>
+                          <Component id="txtFechaDetalle" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txtDescripcion" alignment="0" min="-2" pref="193" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" pref="127" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" pref="523" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="286" max="-2" attributes="0"/>
+                      <Component id="lblHoja" min="-2" pref="54" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="221" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnActualizarDetalle" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnAgregarDetalle" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="479" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="532" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="lblHojaDetalle" min="-2" pref="171" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="432" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblTotalHoras" alignment="0" min="-2" pref="220" max="-2" attributes="0"/>
+                  <Component id="lblCostoTotal" alignment="0" min="-2" pref="210" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="164" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnActualizarHoja" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCrear" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="btnEliminarHoja" min="-2" pref="115" max="-2" attributes="0"/>
+                      <EmptySpace pref="263" max="32767" attributes="0"/>
+                      <Component id="btnActualizarDetalle" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                       <Component id="btnActualizarDetalle1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
+                      <EmptySpace pref="326" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="btnCambiarEstado" min="-2" pref="124" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="341" max="-2" attributes="0"/>
+                      <Component id="btnAgregarDetalle" min="-2" pref="124" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -110,92 +120,110 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnEliminarHoja" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnFiltrar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFiltroPeriodo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnCrear" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Component id="lblHoja" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                   </Group>
-              </Group>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="btnCambiarEstado" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblEstado" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
-                  <Component id="cmbEstado" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="282" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="220" max="-2" attributes="0"/>
-                              <Component id="txtHoras" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtModulo" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblIDProyecto" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtProyectoId" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cmbProyectoAsignado" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblIDRecurso" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtRecursoId" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblPeriodo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtPeriodo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="lblPeriodo" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtPeriodo" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblFechaDetalle" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtFechaDetalle" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblFechaDetalle1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                              <Component id="lblHora" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="lblModulo" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                                      <Component id="txtFechaDetalle" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblFechaDetalle" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblFechaDetalle1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtDescripcion" min="-2" pref="34" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="lblHora" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtHoras" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="lblModulo" min="-2" pref="22" max="-2" attributes="0"/>
+                                  <Component id="txtModulo" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblHojaId" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                                   <Component id="txtHojaId" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="lblHojaDetalle" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="lblTotalHoras" min="-2" pref="22" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblCostoTotal" min="-2" pref="22" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnActualizarDetalle1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnActualizarDetalle" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="btnAgregarDetalle" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="lblTotalHoras" min="-2" pref="22" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnActualizarHoja" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnEliminarHoja" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="btnCrear" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnCambiarEstado" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                              <Component id="lblCostoTotal" min="-2" pref="22" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnActualizarDetalle1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnActualizarDetalle" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-              <Component id="btnAgregarDetalle" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="310" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="432" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -227,6 +255,8 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtProyectoId">
     </Component>
+    <Component class="javax.swing.JComboBox" name="cmbProyectoAsignado">
+    </Component>
     <Component class="javax.swing.JTextField" name="txtRecursoId">
     </Component>
     <Component class="javax.swing.JTextField" name="txtPeriodo">
@@ -235,9 +265,11 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Crear Hoja"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrearActionPerformed"/>
-      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnActualizarHoja">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Actualizar Hoja"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtFechaDetalle">
     </Component>
@@ -300,9 +332,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Agregar Detalle"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarDetalleActionPerformed"/>
-      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -346,22 +375,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JComboBox" name="cmbEstado">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
-            <StringItem index="0" value="Borrador"/>
-            <StringItem index="1" value="Enviada"/>
-            <StringItem index="2" value="Aprobada"/>
-            <StringItem index="3" value="Rechazada"/>
-            <StringItem index="4" value=" "/>
-          </StringArray>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JLabel" name="lblCostoTotal">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -371,49 +384,54 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnCambiarEstado">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cambiar Estado"/>
+        <Property name="text" type="java.lang.String" value="Enviar Hoja"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCambiarEstadoActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnEliminarHoja">
       <Properties>
         <Property name="text" type="java.lang.String" value="Eliminar Hoja"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarHojaActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnActualizarDetalle">
       <Properties>
         <Property name="text" type="java.lang.String" value="Actualizar Detalle"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActualizarDetalleActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnActualizarDetalle1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Eliminar Detalle"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActualizarDetalle1ActionPerformed"/>
-      </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnFiltrar">
+    <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Filtrar"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Gesti&#xf3;n Hoja "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtFiltroPeriodo">
+    <Component class="javax.swing.JLabel" name="lblHoja">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Hoja "/>
+      </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblEstado">
+    <Component class="javax.swing.JLabel" name="lblHojaDetalle">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Detalle de la Hoja "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Estado"/>
+        <Property name="text" type="java.lang.String" value="Agregar Detalle"/>
       </Properties>
     </Component>
   </SubComponents>

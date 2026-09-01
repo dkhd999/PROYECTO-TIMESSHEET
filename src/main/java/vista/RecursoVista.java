@@ -42,6 +42,12 @@ public class RecursoVista extends javax.swing.JFrame {
         tblRecursos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         btnHabilitar = new javax.swing.JButton();
+        lblNumeroCedula = new javax.swing.JLabel();
+        txtNumeroCedula = new javax.swing.JTextField();
+        lblUsuario = new javax.swing.JLabel();
+        txtUsuarioCreado = new javax.swing.JTextField();
+        lblContrasena = new javax.swing.JLabel();
+        txtContrasenaDev = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,6 +60,9 @@ public class RecursoVista extends javax.swing.JFrame {
         lblRol.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblRol.setText("Rol");
 
+        txtRol.setEditable(false);
+        txtRol.setText("Desarrollador");
+
         lblTarifaBase.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTarifaBase.setText("Tarifa base");
 
@@ -63,7 +72,9 @@ public class RecursoVista extends javax.swing.JFrame {
         cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Junior", "Senior" }));
 
         btnGuardar.setText("Guardar");
+
         btnEliminar.setText("Inabilitar ");
+
         tblRecursos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -81,7 +92,15 @@ public class RecursoVista extends javax.swing.JFrame {
         jLabel1.setText("Registro Desarrollador");
 
         btnHabilitar.setText("Habilitar");
-        btnHabilitar.addActionListener(this::btnHabilitarActionPerformed);
+
+        lblNumeroCedula.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblNumeroCedula.setText("Nº Cédula");
+
+        lblUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblUsuario.setText("Usuario:");
+
+        lblContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblContrasena.setText("Contraseña:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,27 +110,32 @@ public class RecursoVista extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNombre)
-                            .addComponent(lblNombre1)
-                            .addComponent(lblRol)
-                            .addComponent(lblTarifaBase)
-                            .addComponent(lblTipo))
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtRol)
-                                .addComponent(txtTarifaBase)
-                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(btnGuardar)
                         .addGap(18, 18, 18)
                         .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnHabilitar)))
+                        .addComponent(btnHabilitar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombre)
+                            .addComponent(lblNombre1)
+                            .addComponent(lblRol)
+                            .addComponent(lblTarifaBase)
+                            .addComponent(lblTipo)
+                            .addComponent(lblNumeroCedula)
+                            .addComponent(lblUsuario)
+                            .addComponent(lblContrasena))
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNumeroCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuarioCreado, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtContrasenaDev, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRol, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                            .addComponent(txtTarifaBase, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                            .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
@@ -132,7 +156,11 @@ public class RecursoVista extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblNombre)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblNumeroCedula)
+                            .addComponent(txtNumeroCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblNombre1)
                             .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -140,22 +168,27 @@ public class RecursoVista extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblRol)
                             .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblTarifaBase)
-                                    .addComponent(txtTarifaBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(28, 28, 28)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblTipo)
-                                    .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(172, 172, 172)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnGuardar)
-                                    .addComponent(btnEliminar)
-                                    .addComponent(btnHabilitar)))))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblTarifaBase)
+                            .addComponent(txtTarifaBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblTipo)
+                            .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblUsuario)
+                            .addComponent(txtUsuarioCreado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblContrasena)
+                            .addComponent(txtContrasenaDev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGuardar)
+                            .addComponent(btnEliminar)
+                            .addComponent(btnHabilitar)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53))
         );
@@ -163,26 +196,76 @@ public class RecursoVista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabilitarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnHabilitarActionPerformed
+    public javax.swing.JButton getBtnGuardar() {
+        return btnGuardar;
+    }
+
+    public javax.swing.JButton getBtnEliminar() {
+        return btnEliminar;
+    }
+
+    public javax.swing.JButton getBtnHabilitar() {
+        return btnHabilitar;
+    }
+
+    public javax.swing.JComboBox<String> getCmbTipo() {
+        return cmbTipo;
+    }
+
+    public javax.swing.JTable getTblRecursos() {
+        return tblRecursos;
+    }
+
+    public javax.swing.JTextField getTxtNombre() {
+        return txtNombre;
+    }
+
+    public javax.swing.JTextField getTxtCorreo() {
+        return txtCorreo;
+    }
+
+    public javax.swing.JTextField getTxtRol() {
+        return txtRol;
+    }
+
+    public javax.swing.JTextField getTxtTarifaBase() {
+        return txtTarifaBase;
+    }
+
+    public javax.swing.JTextField getTxtUsuarioCreado() {
+        return txtUsuarioCreado;
+    }
+
+    public javax.swing.JTextField getTxtContrasenaDev() {
+        return txtContrasenaDev;
+    }
+
+    public javax.swing.JTextField getTxtNumeroCedula() {
+        return txtNumeroCedula;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnEliminar;
-    public javax.swing.JButton btnGuardar;
-    public javax.swing.JButton btnHabilitar;
-    public javax.swing.JComboBox<String> cmbTipo;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnHabilitar;
+    private javax.swing.JComboBox<String> cmbTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblContrasena;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNombre1;
+    private javax.swing.JLabel lblNumeroCedula;
     private javax.swing.JLabel lblRol;
     private javax.swing.JLabel lblTarifaBase;
     private javax.swing.JLabel lblTipo;
-    public javax.swing.JTable tblRecursos;
-    public javax.swing.JTextField txtCorreo;
-    public javax.swing.JTextField txtNombre;
-    public javax.swing.JTextField txtRol;
-    public javax.swing.JTextField txtTarifaBase;
+    private javax.swing.JLabel lblUsuario;
+    private javax.swing.JTable tblRecursos;
+    private javax.swing.JTextField txtContrasenaDev;
+    private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNumeroCedula;
+    private javax.swing.JTextField txtRol;
+    private javax.swing.JTextField txtTarifaBase;
+    private javax.swing.JTextField txtUsuarioCreado;
     // End of variables declaration//GEN-END:variables
 }

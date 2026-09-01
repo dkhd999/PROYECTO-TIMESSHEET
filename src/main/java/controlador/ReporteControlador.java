@@ -1,92 +1,93 @@
 package controlador;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
-import modelo.DetalleActividad;
 import modelo.HojaTiempo;
 import modelo.Recurso;
-import java.io.FileOutputStream;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
+import vista.ReporteVista;
 
-/**
- * Controlador de generación de reportes PDF.
- * Obtiene los datos del modelo y los renderiza con iTextPDF. (RF-06.4)
- */
+/** Coordina ReporteVista y delega la generación del documento al controlador de reportes. */
 public class ReporteControlador {
 
-    public DefaultComboBoxModel<HojaTiempo> cargarHojas() throws Exception {
-        DefaultComboBoxModel<HojaTiempo> combo = new DefaultComboBoxModel<>();
-        for (HojaTiempo hoja : HojaTiempo.listarTodas()) combo.addElement(hoja);
-        return combo;
+    private final ReporteVista vista;
+    private final ReportePDF reportes = new ReportePDF();
+    private final Integer recursoUsuarioId;
+    private String rutaArchivo;
+
+    public ReporteControlador(ReporteVista vista) {
+        this(vista, null);
     }
 
-    public String generarReportePDF(int hojaTiempoId, int recursoId, String rutaArchivo) throws Exception {
-        // 1. Obtener datos del modelo (RF-06.4: el modelo entrega, no genera)
-        HojaTiempo h = new HojaTiempo();
-        h.setId(hojaTiempoId);
-        h.cargarDetalles();
-
-        Recurso recurso = null;
-        List<Recurso> recursos = Recurso.listarTodos();
-        for (Recurso r : recursos) {
-            if (r.getId() == recursoId) { recurso = r; break; }
-        }
-        if (recurso == null) throw new Exception("No se encontró el recurso con ID: " + recursoId);
-
-        double totalHoras = h.calcularTotalHoras();
-        double costoTotal = h.calcularCostoTotal(recurso);
-
-        // 2. Generar PDF con iTextPDF
-        Document doc = new Document();
-        PdfWriter.getInstance(doc, new FileOutputStream(rutaArchivo));
-        doc.open();
-
-        Font fuenteTitulo = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
-        Font fuenteSubtitulo = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
-        Font fuenteNormal = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
-
-        doc.add(new Paragraph("REPORTE DE HOJA DE TIEMPO", fuenteTitulo));
-        doc.add(Chunk.NEWLINE);
-        doc.add(new Paragraph("Recurso: " + recurso.getNombre() + " (" + recurso.getTipo() + ")", fuenteSubtitulo));
-        doc.add(new Paragraph("Periodo: " + h.getPeriodo(), fuenteNormal));
-        doc.add(new Paragraph("Estado: " + h.getEstado(), fuenteNormal));
-        doc.add(new Paragraph("Tarifa/hora: $" + String.format("%.2f", recurso.calcularTarifaHora()), fuenteNormal));
-        doc.add(Chunk.NEWLINE);
-
-        // Tabla de detalles
-        PdfPTable tabla = new PdfPTable(5);
-        tabla.setWidthPercentage(100);
-        String[] cabeceras = {"Fecha", "Módulo", "Descripción", "Horas", "Costo"};
-        for (String cab : cabeceras) {
-            PdfPCell celda = new PdfPCell(new Phrase(cab, fuenteSubtitulo));
-            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            tabla.addCell(celda);
-        }
-        for (DetalleActividad d : h.getDetalles()) {
-            double costoDet = recurso.calcularCostoHoras(d.getHoras());
-            tabla.addCell(new Phrase(d.getFecha(), fuenteNormal));
-            tabla.addCell(new Phrase(d.getModulo(), fuenteNormal));
-            tabla.addCell(new Phrase(d.getDescripcion(), fuenteNormal));
-            tabla.addCell(new Phrase(String.valueOf(d.getHoras()), fuenteNormal));
-            tabla.addCell(new Phrase("$" + String.format("%.2f", costoDet), fuenteNormal));
-        }
-        doc.add(tabla);
-        doc.add(Chunk.NEWLINE);
-
-        doc.add(new Paragraph("Total de Horas: " + totalHoras, fuenteSubtitulo));
-        doc.add(new Paragraph("Costo Total: $" + String.format("%.2f", costoTotal), fuenteSubtitulo));
-
-        // Espacio de firma (RF-06.3)
-        doc.add(Chunk.NEWLINE);
-        doc.add(Chunk.NEWLINE);
-        doc.add(Chunk.NEWLINE);
-        doc.add(new Paragraph("_________________________________", fuenteNormal));
-        doc.add(new Paragraph("Firma del Cliente", fuenteNormal));
-        doc.add(new Paragraph("Nombre: ___________________________", fuenteNormal));
-        doc.add(new Paragraph("Fecha:  ___________________________", fuenteNormal));
-
-        doc.close();
-        return rutaArchivo;
+    public ReporteControlador(ReporteVista vista, Integer recursoUsuarioId) {
+        this.vista = vista;
+        this.recursoUsuarioId = recursoUsuarioId;
+        vista.getCmbHojas().addActionListener(event -> cargarHojaSeleccionada());
+        vista.getCmbnNombreDev().addActionListener(event -> cargarDesarrolladorSeleccionado());
+        vista.getBtnSeleccionarRuta().addActionListener(event -> seleccionarRuta());
+        vista.getBtnGenerarPDF().addActionListener(event -> generarPDF());
+        cargarHojas();
+        cargarDesarrolladores();
     }
+
+    private void cargarHojas() {
+        try {
+            vista.getCmbHojas().setModel(reportes.cargarHojas(recursoUsuarioId));
+            if (vista.getCmbHojas().getItemCount() == 0) mostrar("No hay hojas de tiempo disponibles.");
+        } catch (Exception ex) { mostrarError(ex); }
+    }
+
+    private void cargarHojaSeleccionada() {
+        HojaTiempo hoja = (HojaTiempo) vista.getCmbHojas().getSelectedItem();
+        if (hoja != null) {
+            vista.getTxtHojaId().setText(String.valueOf(hoja.getId()));
+            vista.getTxtRecursoId().setText(String.valueOf(hoja.getRecursoId()));
+        }
+    }
+
+    private void cargarDesarrolladores() {
+        try {
+            javax.swing.DefaultComboBoxModel<Recurso> modelo = new javax.swing.DefaultComboBoxModel<>();
+            for (Recurso recurso : Recurso.listarActivos()) {
+                if (recursoUsuarioId == null || recurso.getId() == recursoUsuarioId) modelo.addElement(recurso);
+            }
+            vista.getCmbnNombreDev().setModel(modelo);
+            cargarDesarrolladorSeleccionado();
+        } catch (Exception ex) { mostrarError(ex); }
+    }
+
+    private void cargarDesarrolladorSeleccionado() {
+        Recurso recurso = (Recurso) vista.getCmbnNombreDev().getSelectedItem();
+        if (recurso != null) {
+            vista.getTxtRecursoId().setText(String.valueOf(recurso.getId()));
+            try {
+                vista.getCmbHojas().setModel(reportes.cargarHojas(recurso.getId()));
+                cargarHojaSeleccionada();
+            } catch (Exception ex) { mostrarError(ex); }
+        }
+    }
+
+    private void seleccionarRuta() {
+        javax.swing.JFileChooser selector = new javax.swing.JFileChooser();
+        if (selector.showSaveDialog(vista) == javax.swing.JFileChooser.APPROVE_OPTION) {
+            rutaArchivo = selector.getSelectedFile().getAbsolutePath();
+        }
+    }
+
+    private void generarPDF() {
+        try {
+            if (rutaArchivo == null || rutaArchivo.trim().isEmpty()) {
+                mostrar("Selecciona una ubicación para guardar el PDF.");
+                return;
+            }
+            int hojaId = Integer.parseInt(vista.getTxtHojaId().getText().trim());
+            int recursoId = Integer.parseInt(vista.getTxtRecursoId().getText().trim());
+            if (recursoUsuarioId != null && recursoUsuarioId.intValue() != recursoId)
+                throw new Exception("No puedes generar un reporte de otro desarrollador.");
+            reportes.generarReportePDF(hojaId, recursoId, rutaArchivo.trim());
+            mostrar("Reporte PDF generado correctamente.");
+        } catch (NumberFormatException ex) {
+            mostrar("Los IDs deben ser números válidos.");
+        } catch (Exception ex) { mostrarError(ex); }
+    }
+
+    private void mostrar(String mensaje) { javax.swing.JOptionPane.showMessageDialog(vista, mensaje); }
+    private void mostrarError(Exception ex) { mostrar("Error: " + ex.getMessage()); }
 }

@@ -15,35 +15,35 @@ public class LoginControlador {
 
     public LoginControlador(LoginVista vista) {
         this.vista = vista;
-        vista.btnIngresar.addActionListener(event -> ingresar());
-        vista.password.addActionListener(event -> ingresar());
+        vista.getBtnIngresar().addActionListener(event -> ingresar());
+        vista.getPassword().addActionListener(event -> ingresar());
     }
 
     private void ingresar() {
         try {
-            Login usuario = Login.autenticar(vista.txtUsuario.getText(),
-                    new String(vista.password.getPassword()));
+                Login usuario = Login.autenticar(vista.getTxtUsuario().getText(),
+                    new String(vista.getPassword().getPassword()));
             vista.dispose();
             abrirVistas(usuario);
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(vista, ex.getMessage(),
                     "Inicio de sesion", javax.swing.JOptionPane.WARNING_MESSAGE);
-            vista.password.setText("");
+            vista.getPassword().setText("");
         }
     }
 
     private void abrirVistas(Login usuario) {
         if ("Gestor".equalsIgnoreCase(usuario.getTipo())) {
             ProyectoVista proyectos = new ProyectoVista();
-            new ProyectoVistaControlador(proyectos);
+            new ProyectoControlador(proyectos);
             NavegacionControlador.configurar(proyectos,
                     () -> abrirRecursos(proyectos), () -> cerrarSesion(proyectos));
             proyectos.setVisible(true);
         } else {
             HojaTiempoVista hojas = new HojaTiempoVista();
             new HojaTiempoControlador(hojas, usuario.getRol(), usuario.getRecursoId());
-            NavegacionControlador.configurar(hojas,
-                    () -> abrirReporte(hojas, null), () -> cerrarSesion(hojas));
+                NavegacionControlador.configurar(hojas,
+                    () -> abrirReporte(hojas, null, usuario.getRecursoId()), () -> cerrarSesion(hojas));
             hojas.setVisible(true);
         }
     }
@@ -51,7 +51,7 @@ public class LoginControlador {
     private void abrirRecursos(java.awt.Window anterior) {
         anterior.setVisible(false);
         RecursoVista recursos = new RecursoVista();
-        new RecursoVistaControlador(recursos);
+        new RecursoControlador(recursos);
         NavegacionControlador.configurar(recursos,
             () -> abrirAsignaciones(recursos), () -> mostrarAnterior(recursos, anterior));
         recursos.setVisible(true);
@@ -61,14 +61,14 @@ public class LoginControlador {
         anterior.setVisible(false);
         AsignacionVista asignaciones = new AsignacionVista();
         NavegacionControlador.configurar(asignaciones,
-            () -> abrirReporte(asignaciones, anterior), () -> mostrarAnterior(asignaciones, anterior));
+            () -> abrirReporte(asignaciones, anterior, null), () -> mostrarAnterior(asignaciones, anterior));
         asignaciones.setVisible(true);
     }
 
-    private void abrirReporte(java.awt.Window anterior, java.awt.Window volver) {
+    private void abrirReporte(java.awt.Window anterior, java.awt.Window volver, Integer recursoUsuarioId) {
         anterior.setVisible(false);
         ReporteVista reportes = new ReporteVista();
-        new ReporteVistaControlador(reportes);
+        new ReporteControlador(reportes, recursoUsuarioId);
         NavegacionControlador.configurar(reportes, () -> { },
                 () -> {
                 reportes.dispose();

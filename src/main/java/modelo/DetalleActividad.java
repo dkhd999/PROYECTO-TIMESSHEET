@@ -30,8 +30,8 @@ public class DetalleActividad {
 
     // ─────── Validaciones (RF-04.5, RF-07.1, RF-07.3) ───────
     private void validar() throws Exception {
-        if (horas <= 0 || horas > 24)
-            throw new Exception("Las horas deben ser mayores a 0 y no exceder 24 por día.");
+        if (horas <= 0 || horas > 8)
+            throw new Exception("Las horas deben ser mayores a 0 y no exceder 8 horas por día.");
         if (descripcion == null || descripcion.trim().isEmpty())
             throw new Exception("La descripción de la actividad es obligatoria.");
         if (existeDuplicado())
@@ -43,6 +43,8 @@ public class DetalleActividad {
             LocalDate[] rango = hoja.rangoPeriodo();
             if (fechaActividad.isBefore(rango[0]) || fechaActividad.isAfter(rango[1]))
                 throw new Exception("La fecha de la actividad debe estar dentro del periodo de la hoja.");
+            if (horasRegistradasEnFecha() + horas > 8.0)
+                throw new Exception("El desarrollador no puede registrar más de 8 horas en un mismo día.");
             if (hoja.calcularTotalHoras() + horas > 60.0)
                 throw new Exception("El total semanal no puede superar 60 horas.");
         } catch (DateTimeParseException e) {
@@ -71,6 +73,19 @@ public class DetalleActividad {
             stmt.setInt(4, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next() && rs.getInt(1) > 0;
+            }
+        }
+    }
+
+    private double horasRegistradasEnFecha() throws Exception {
+        String sql = "SELECT COALESCE(SUM(horas), 0) FROM detalle_actividad WHERE fecha=? AND hoja_tiempo_id=? AND id!=?";
+        try (Connection conn = new ConexionBDD().conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, fecha);
+            stmt.setInt(2, hojaTiempoId);
+            stmt.setInt(3, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() ? rs.getDouble(1) : 0.0;
             }
         }
     }
@@ -141,16 +156,51 @@ public class DetalleActividad {
     }
 
     // ─────── Getters & Setters ───────
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getFecha() { return fecha; }
-    public void setFecha(String fecha) { this.fecha = fecha; }
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-    public double getHoras() { return horas; }
-    public void setHoras(double horas) { this.horas = horas; }
-    public String getModulo() { return modulo; }
-    public void setModulo(String modulo) { this.modulo = modulo; }
-    public int getHojaTiempoId() { return hojaTiempoId; }
-    public void setHojaTiempoId(int hojaTiempoId) { this.hojaTiempoId = hojaTiempoId; }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public double getHoras() {
+        return horas;
+    }
+
+    public void setHoras(double horas) {
+        this.horas = horas;
+    }
+
+    public String getModulo() {
+        return modulo;
+    }
+
+    public void setModulo(String modulo) {
+        this.modulo = modulo;
+    }
+
+    public int getHojaTiempoId() {
+        return hojaTiempoId;
+    }
+
+    public void setHojaTiempoId(int hojaTiempoId) {
+        this.hojaTiempoId = hojaTiempoId;
+    }
 }

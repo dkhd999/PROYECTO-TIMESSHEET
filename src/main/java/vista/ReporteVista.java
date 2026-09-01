@@ -27,14 +27,16 @@ public class ReporteVista extends javax.swing.JFrame {
     private void initComponents() {
 
         cmbHojas = new javax.swing.JComboBox<>();
-        txtRutaArchivo = new javax.swing.JTextField();
         btnSeleccionarRuta = new javax.swing.JButton();
         btnGenerarPDF = new javax.swing.JButton();
         txtHojaId = new javax.swing.JTextField();
         txtRecursoId = new javax.swing.JTextField();
         lblIdHoja = new javax.swing.JLabel();
         lblProgramador = new javax.swing.JLabel();
-        lblProgramador1 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        cmbnNombreDev = new javax.swing.JComboBox<>();
+        lblNombreDev = new javax.swing.JLabel();
+        lblHoja = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,74 +52,116 @@ public class ReporteVista extends javax.swing.JFrame {
         lblProgramador.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblProgramador.setText("ID Programador:");
 
-        lblProgramador1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblProgramador1.setText("Ruta Archivo:");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Generar Reporte ");
+
+        lblNombreDev.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblNombreDev.setText("Nombre:");
+
+        lblHoja.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblHoja.setText("Hoja:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(144, 144, 144)
-                .addComponent(btnSeleccionarRuta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
-                .addComponent(btnGenerarPDF)
-                .addGap(153, 153, 153))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblIdHoja, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProgramador)
-                    .addComponent(lblProgramador1))
+                    .addComponent(lblNombreDev)
+                    .addComponent(lblHoja))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(92, 92, 92)
-                        .addComponent(cmbHojas, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(86, 86, 86))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(274, 274, 274))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtRutaArchivo)
-                            .addComponent(txtRecursoId, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cmbnNombreDev, 0, 216, Short.MAX_VALUE)
+                            .addComponent(cmbHojas, 0, 216, Short.MAX_VALUE)
+                            .addComponent(txtRecursoId))
+                        .addContainerGap())))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(btnSeleccionarRuta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGenerarPDF)
+                .addGap(142, 142, 142))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbHojas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtHojaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblIdHoja))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtRecursoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblProgramador))
-                .addGap(29, 29, 29)
+                    .addComponent(lblProgramador)
+                    .addComponent(txtRecursoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtRutaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblProgramador1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                    .addComponent(cmbnNombreDev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombreDev))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGenerarPDF)
-                    .addComponent(btnSeleccionarRuta))
-                .addGap(56, 56, 56))
+                    .addComponent(cmbHojas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblHoja))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSeleccionarRuta)
+                    .addComponent(btnGenerarPDF))
+                .addGap(91, 91, 91))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public javax.swing.JComboBox<modelo.HojaTiempo> getCmbHojas() {
+        return cmbHojas;
+    }
+
+    public javax.swing.JComboBox<modelo.Recurso> getCmbnNombreDev() {
+        return cmbnNombreDev;
+    }
+
+    public javax.swing.JButton getBtnSeleccionarRuta() {
+        return btnSeleccionarRuta;
+    }
+
+    public javax.swing.JButton getBtnGenerarPDF() {
+        return btnGenerarPDF;
+    }
+
+    public javax.swing.JTextField getTxtHojaId() {
+        return txtHojaId;
+    }
+
+    public javax.swing.JTextField getTxtRecursoId() {
+        return txtRecursoId;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnGenerarPDF;
-    public javax.swing.JButton btnSeleccionarRuta;
-    public javax.swing.JComboBox<modelo.HojaTiempo> cmbHojas;
+    private javax.swing.JButton btnGenerarPDF;
+    private javax.swing.JButton btnSeleccionarRuta;
+    private javax.swing.JComboBox<modelo.HojaTiempo> cmbHojas;
+    private javax.swing.JComboBox<modelo.Recurso> cmbnNombreDev;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblHoja;
     private javax.swing.JLabel lblIdHoja;
+    private javax.swing.JLabel lblNombreDev;
     private javax.swing.JLabel lblProgramador;
-    private javax.swing.JLabel lblProgramador1;
-    public javax.swing.JTextField txtHojaId;
-    public javax.swing.JTextField txtRecursoId;
-    public javax.swing.JTextField txtRutaArchivo;
+    private javax.swing.JTextField txtHojaId;
+    private javax.swing.JTextField txtRecursoId;
     // End of variables declaration//GEN-END:variables
 }

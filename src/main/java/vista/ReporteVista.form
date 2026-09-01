@@ -23,65 +23,74 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="144" max="-2" attributes="0"/>
-              <Component id="btnSeleccionarRuta" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="77" max="32767" attributes="0"/>
-              <Component id="btnGenerarPDF" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="153" max="-2" attributes="0"/>
-          </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblIdHoja" min="-2" pref="66" max="-2" attributes="0"/>
                   <Component id="lblProgramador" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblProgramador1" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblNombreDev" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblHoja" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="txtHojaId" min="-2" pref="118" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
-                      <Component id="cmbHojas" min="-2" pref="123" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace pref="35" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtHojaId" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="274" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="34" pref="34" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtRutaArchivo" max="32767" attributes="0"/>
-                          <Component id="txtRecursoId" pref="118" max="32767" attributes="0"/>
+                          <Component id="txtNombreDev" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cmbHojas" alignment="0" pref="216" max="32767" attributes="0"/>
+                          <Component id="txtRecursoId" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
+              <Component id="btnSeleccionarRuta" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="btnGenerarPDF" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cmbHojas" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtHojaId" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblIdHoja" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtRecursoId" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblProgramador" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtRecursoId" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtRutaArchivo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblProgramador1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtNombreDev" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblNombreDev" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="79" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnGenerarPDF" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbHojas" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblHoja" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="138" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnSeleccionarRuta" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnGenerarPDF" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -101,8 +110,6 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtRutaArchivo">
     </Component>
     <Component class="javax.swing.JButton" name="btnSeleccionarRuta">
       <Properties>
@@ -140,12 +147,30 @@
         <Property name="text" type="java.lang.String" value="ID Programador:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblProgramador1">
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Generar Reporte "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtNombreDev">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblNombreDev">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Ruta Archivo:"/>
+        <Property name="text" type="java.lang.String" value="Nombre:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblHoja">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Hoja:"/>
       </Properties>
     </Component>
   </SubComponents>

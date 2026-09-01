@@ -1,10 +1,14 @@
-package controlador;
 
+package controlador;
 import modelo.HojaTiempo;
 import modelo.DetalleActividad;
 import modelo.Recurso;
+import modelo.Proyecto;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import vista.HojaTiempoVista;
 
 /**
@@ -35,14 +39,25 @@ public class HojaTiempoControlador {
         this.vista = vista;
         this.rolUsuario = rolUsuario;
         this.recursoUsuarioId = recursoUsuarioId;
-        vista.btnCrear.addActionListener(event -> guardarHojaDesdeVista());
-        vista.btnAgregarDetalle.addActionListener(event -> guardarDetalleDesdeVista());
-        vista.btnCambiarEstado.addActionListener(event -> cambiarEstadoDesdeVista());
-        vista.btnEliminarHoja.addActionListener(event -> eliminarHojaDesdeVista());
-        vista.btnFiltrar.addActionListener(event -> filtrarDesdeVista());
-        vista.btnActualizarDetalle.addActionListener(event -> actualizarDetalleDesdeVista());
-        vista.btnActualizarDetalle1.addActionListener(event -> eliminarDetalleDesdeVista());
-        vista.tblHojas.getSelectionModel().addListSelectionListener(event -> cargarSeleccionDesdeVista());
+        if (recursoUsuarioId != null) {
+            vista.getTxtRecursoId().setText(String.valueOf(recursoUsuarioId));
+            vista.getTxtRecursoId().setEditable(false);
+        }
+        configurarPeriodoActual();
+        configurarProyectosAsignados();
+        vista.getBtnCrear().addActionListener(event -> guardarHojaDesdeVista());
+        vista.getBtnActualizarHoja().addActionListener(event -> actualizarHojaDesdeVista());
+        vista.getBtnAgregarDetalle().addActionListener(event -> guardarDetalleDesdeVista());
+        vista.getBtnCambiarEstado().addActionListener(event -> cambiarEstadoDesdeVista());
+        vista.getBtnEliminarHoja().addActionListener(event -> eliminarHojaDesdeVista());
+        vista.getBtnActualizarDetalle().addActionListener(event -> actualizarDetalleDesdeVista());
+        vista.getBtnActualizarDetalle1().addActionListener(event -> eliminarDetalleDesdeVista());
+        vista.getTblHojas().getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                javax.swing.SwingUtilities.invokeLater(this::cargarSeleccionDesdeVista);
+            }
+        });
+        vista.getTblDetalles().getSelectionModel().addListSelectionListener(event -> cargarDetalleSeleccionado());
         try {
             cargarTablaEnVista(null);
             actualizarPermisos(null);
@@ -51,110 +66,205 @@ public class HojaTiempoControlador {
         }
     }
 
-    private void guardarHojaDesdeVista() {
+    private void configurarPeriodoActual() {
+        LocalDate lunes = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate viernes = lunes.plusDays(4);
+        vista.getTxtPeriodo().setText(lunes + " / " + viernes);
+        vista.getTxtPeriodo().setEditable(false);
+        vista.getTxtHojaId().setEditable(false);
+    }
+
+    private void configurarProyectosAsignados() {
         try {
-                int recursoId = Integer.parseInt(vista.txtRecursoId.getText().trim());
-                validarRecursoUsuario(recursoId);
-                guardarHoja(Integer.parseInt(vista.txtProyectoId.getText().trim()), recursoId, vista.txtPeriodo.getText());
-            mostrar("Hoja de Tiempo creada en estado Borrador.");
-            cargarTablaEnVista(null);
+            javax.swing.DefaultComboBoxModel<Proyecto> modelo = new javax.swing.DefaultComboBoxModel<>();
+            if (recursoUsuarioId != null) {
+                for (Proyecto proyecto : Proyecto.listarPorRecurso(recursoUsuarioId)) modelo.addElement(proyecto);
+            } else {
+                for (Proyecto proyecto : Proyecto.listarTodos()) {
+                    if ("Activo".equalsIgnoreCase(proyecto.getEstado())) modelo.addElement(proyecto);
+                }
+            }
+            vista.getCmbProyectoAsignado().setModel(modelo);
+            vista.getCmbProyectoAsignado().addActionListener(event -> seleccionarProyecto());
+            seleccionarProyecto();
         } catch (Exception ex) { mostrarError(ex); }
     }
 
-    private void guardarDetalleDesdeVista() {
+    private void seleccionarProyecto() {
+        Proyecto proyecto = (Proyecto) vista.getCmbProyectoAsignado().getSelectedItem();
+        vista.getTxtProyectoId().setText(proyecto == null ? "" : String.valueOf(proyecto.getId()));
+        vista.getTxtProyectoId().setEditable(false);
+    }
+
+    private void guardarHojaDesdeVista() {
         try {
-                int hojaId = Integer.parseInt(vista.txtHojaId.getText().trim());
-                guardarDetalle(vista.txtFechaDetalle.getText(), vista.txtDescripcion.getText(),
-                    vista.txtHoras.getText(), vista.txtModulo.getText(), hojaId);
+                int recursoId = Integer.parseInt(vista.getTxtRecursoId().getText().trim());
+                validarRecursoUsuario(recursoId);
+                guardarHoja(Integer.parseInt(vista.getTxtProyectoId().getText().trim()), recursoId, vista.getTxtPeriodo().getText());
+            mostrar("Hoja de Tiempo creada en estado Borrador.");
+            cargarTablaEnVista(null);
+            if (vista.getTblHojas().getRowCount() > 0) {
+                vista.getTblHojas().setRowSelectionInterval(0, 0);
+            }
+            limpiarCamposDetalle();
+        } catch (Exception ex) { mostrarError(ex); }
+    }
+private void guardarDetalleDesdeVista() {
+        try {
+            // 1. Obtiene el ID de la hoja seleccionada
+            int hojaId = Integer.parseInt(vista.getTxtHojaId().getText().trim());
+            
+            // 2. Llama al método que guarda en la base de datos
+            guardarDetalle(
+                vista.getTxtFechaDetalle().getText(), 
+                vista.getTxtDescripcion().getText(),
+                vista.getTxtHoras().getText(), 
+                vista.getTxtModulo().getText(), 
+                hojaId
+            );
+            
+            // 3. Refresca la tabla y los campos de la vista
             cargarSeleccionDesdeVista();
+            
+        } catch (Exception ex) { 
+            mostrarError(ex); 
+        }
+    }
+    private void actualizarHojaDesdeVista() {
+        try {
+            int fila = filaSeleccionada();
+            int hojaId = (int) vista.getTblHojas().getValueAt(fila, 0);
+            int recursoId = (int) vista.getTblHojas().getValueAt(fila, 3);
+            validarRecursoUsuario(recursoId);
+            actualizarHoja(hojaId, Integer.parseInt(vista.getTxtProyectoId().getText().trim()),
+                    recursoId, vista.getTxtPeriodo().getText().trim(),
+                    vista.getTblHojas().getValueAt(fila, 5).toString());
+            cargarTablaEnVista(null);
+            seleccionarHojaPorId(hojaId);
+            mostrar("Hoja actualizada correctamente.");
         } catch (Exception ex) { mostrarError(ex); }
     }
 
     private void cambiarEstadoDesdeVista() {
         try {
+            if (!"Desarrollador".equalsIgnoreCase(rolUsuario))
+                throw new Exception("Solo el desarrollador puede enviar la hoja.");
             int fila = filaSeleccionada();
-                cambiarEstado((int) vista.tblHojas.getValueAt(fila, 0), (int) vista.tblHojas.getValueAt(fila, 1),
-                    (int) vista.tblHojas.getValueAt(fila, 2), vista.tblHojas.getValueAt(fila, 3).toString(),
-                    vista.cmbEstado.getSelectedItem().toString(), rolUsuario);
-            mostrar("Estado actualizado correctamente.");
+            int hojaId = (int) vista.getTblHojas().getValueAt(fila, 0);
+            cambiarEstado(hojaId, (int) vista.getTblHojas().getValueAt(fila, 1),
+                    (int) vista.getTblHojas().getValueAt(fila, 3), vista.getTblHojas().getValueAt(fila, 4).toString(),
+                    "Enviada", rolUsuario);
             cargarTablaEnVista(null);
+            seleccionarHojaPorId(hojaId);
+            mostrar("Hoja enviada correctamente. Total horas: " + calcularTotalHoras(hojaId)
+                    + " | Costo total: $" + String.format("%.2f", calcularCostoTotal(hojaId,
+                    (int) vista.getTblHojas().getValueAt(vista.getTblHojas().getSelectedRow(), 3))));
         } catch (Exception ex) { mostrarError(ex); }
+    }
+
+    private void seleccionarHojaPorId(int hojaId) {
+        for (int fila = 0; fila < vista.getTblHojas().getRowCount(); fila++) {
+            if ((int) vista.getTblHojas().getValueAt(fila, 0) == hojaId) {
+                vista.getTblHojas().setRowSelectionInterval(fila, fila);
+                return;
+            }
+        }
+    }
+
+    private void limpiarCamposDetalle() {
+        vista.getTxtFechaDetalle().setText("");
+        vista.getTxtDescripcion().setText("");
+        vista.getTxtHoras().setText("");
+        vista.getTxtModulo().setText("");
     }
 
     private void eliminarHojaDesdeVista() {
         try {
             int fila = filaSeleccionada();
-                eliminarHoja((int) vista.tblHojas.getValueAt(fila, 0), (int) vista.tblHojas.getValueAt(fila, 1),
-                    (int) vista.tblHojas.getValueAt(fila, 2), vista.tblHojas.getValueAt(fila, 3).toString(),
-                    vista.tblHojas.getValueAt(fila, 4).toString());
+                eliminarHoja((int) vista.getTblHojas().getValueAt(fila, 0), (int) vista.getTblHojas().getValueAt(fila, 1),
+                    (int) vista.getTblHojas().getValueAt(fila, 3), vista.getTblHojas().getValueAt(fila, 4).toString(),
+                    vista.getTblHojas().getValueAt(fila, 5).toString());
             mostrar("Hoja de tiempo inactivada correctamente.");
             cargarTablaEnVista(null);
         } catch (Exception ex) { mostrarError(ex); }
     }
 
-    private void filtrarDesdeVista() {
-        try { cargarTablaEnVista(vista.txtFiltroPeriodo.getText()); }
-        catch (Exception ex) { mostrarError(ex); }
-    }
-
     private void actualizarDetalleDesdeVista() {
         try {
-            int fila = vista.tblDetalles.getSelectedRow();
+            int fila = vista.getTblDetalles().getSelectedRow();
             if (fila < 0) throw new Exception("Selecciona un detalle de actividad.");
-                actualizarDetalle((int) vista.tblDetalles.getValueAt(fila, 0), vista.txtFechaDetalle.getText(),
-                    vista.txtDescripcion.getText(), Double.parseDouble(vista.txtHoras.getText().trim().replace(',', '.')),
-                    vista.txtModulo.getText(), Integer.parseInt(vista.txtHojaId.getText().trim()));
+                actualizarDetalle((int) vista.getTblDetalles().getValueAt(fila, 0), vista.getTxtFechaDetalle().getText(),
+                    vista.getTxtDescripcion().getText(), Double.parseDouble(vista.getTxtHoras().getText().trim().replace(',', '.')),
+                    vista.getTxtModulo().getText(), Integer.parseInt(vista.getTxtHojaId().getText().trim()));
             cargarSeleccionDesdeVista();
         } catch (Exception ex) { mostrarError(ex); }
     }
 
     private void eliminarDetalleDesdeVista() {
         try {
-            int fila = vista.tblDetalles.getSelectedRow();
+            int fila = vista.getTblDetalles().getSelectedRow();
             if (fila < 0) throw new Exception("Selecciona un detalle de actividad.");
-            eliminarDetalle((int) vista.tblDetalles.getValueAt(fila, 0));
+            eliminarDetalle((int) vista.getTblDetalles().getValueAt(fila, 0));
             cargarSeleccionDesdeVista();
         } catch (Exception ex) { mostrarError(ex); }
     }
 
     private void cargarSeleccionDesdeVista() {
-        int fila = vista.tblHojas.getSelectedRow();
-        if (fila < 0) return;
+        int fila = vista.getTblHojas().getSelectedRow();
+        if (fila < 0) {
+            vista.getTblDetalles().setModel(new DefaultTableModel());
+            return;
+        }
         try {
-            int hojaId = (int) vista.tblHojas.getValueAt(fila, 0);
-            int recursoId = (int) vista.tblHojas.getValueAt(fila, 2);
-            vista.txtHojaId.setText(String.valueOf(hojaId));
-            vista.txtProyectoId.setText(String.valueOf(vista.tblHojas.getValueAt(fila, 1)));
-            vista.txtRecursoId.setText(String.valueOf(recursoId));
-            vista.txtPeriodo.setText(vista.tblHojas.getValueAt(fila, 3).toString());
-            String estado = vista.tblHojas.getValueAt(fila, 4).toString();
-            vista.cmbEstado.setSelectedItem(estado);
-            vista.tblDetalles.setModel(obtenerTablaDetalles(hojaId));
-            vista.lblTotalHoras.setText("Total horas: " + calcularTotalHoras(hojaId));
-            vista.lblCostoTotal.setText("Costo total: $" + String.format("%.2f", calcularCostoTotal(hojaId, recursoId)));
+            int hojaId = (int) vista.getTblHojas().getValueAt(fila, 0);
+            int recursoId = (int) vista.getTblHojas().getValueAt(fila, 3);
+            vista.getTxtHojaId().setText(String.valueOf(hojaId));
+            vista.getTxtProyectoId().setText(String.valueOf(vista.getTblHojas().getValueAt(fila, 1)));
+            vista.getTxtRecursoId().setText(String.valueOf(recursoId));
+            vista.getTxtPeriodo().setText(vista.getTblHojas().getValueAt(fila, 4).toString());
+            String estado = vista.getTblHojas().getValueAt(fila, 5).toString();
+            vista.getTblDetalles().setModel(obtenerTablaDetalles(hojaId));
+            if (vista.getTblDetalles().getRowCount() > 0) {
+                vista.getTblDetalles().setRowSelectionInterval(0, 0);
+                cargarDetalleSeleccionado();
+            } else {
+                limpiarCamposDetalle();
+            }
+            vista.getLblTotalHoras().setText("Total horas: " + calcularTotalHoras(hojaId));
+            vista.getLblCostoTotal().setText("Costo total: $" + String.format("%.2f", calcularCostoTotal(hojaId, recursoId)));
             actualizarPermisos(estado);
         } catch (Exception ex) { mostrarError(ex); }
     }
 
+    private void cargarDetalleSeleccionado() {
+        int fila = vista.getTblDetalles().getSelectedRow();
+        if (fila < 0) {
+            return;
+        }
+        vista.getTxtFechaDetalle().setText(String.valueOf(vista.getTblDetalles().getValueAt(fila, 1)));
+        vista.getTxtDescripcion().setText(String.valueOf(vista.getTblDetalles().getValueAt(fila, 2)));
+        vista.getTxtHoras().setText(String.valueOf(vista.getTblDetalles().getValueAt(fila, 3)));
+        vista.getTxtModulo().setText(String.valueOf(vista.getTblDetalles().getValueAt(fila, 4)));
+    }
+
     private void cargarTablaEnVista(String periodo) throws Exception {
-        vista.tblHojas.setModel(cargarHojas(periodo, recursoUsuarioId));
-        vista.tblDetalles.setModel(new DefaultTableModel());
-        vista.lblTotalHoras.setText("Total horas: 0");
-        vista.lblCostoTotal.setText("Costo total: $0.00");
+        vista.getTblHojas().setModel(cargarHojas(periodo, recursoUsuarioId));
+        vista.getTblDetalles().setModel(new DefaultTableModel());
+        vista.getLblTotalHoras().setText("Total horas: 0");
+        vista.getLblCostoTotal().setText("Costo total: $0.00");
     }
 
     private void actualizarPermisos(String estado) {
         boolean puedeEditar = estado != null && ("Borrador".equalsIgnoreCase(estado) || "Rechazada".equalsIgnoreCase(estado));
-        vista.btnAgregarDetalle.setEnabled(puedeEditar);
-        vista.btnActualizarDetalle.setEnabled(puedeEditar);
-        vista.btnActualizarDetalle1.setEnabled(puedeEditar);
-        vista.btnEliminarHoja.setEnabled("Borrador".equalsIgnoreCase(estado));
-        vista.btnCambiarEstado.setEnabled(("Desarrollador".equalsIgnoreCase(rolUsuario) && puedeEditar)
-            || (!"Desarrollador".equalsIgnoreCase(rolUsuario) && "Enviada".equalsIgnoreCase(estado)));
+        vista.getBtnAgregarDetalle().setEnabled(puedeEditar);
+        vista.getBtnActualizarDetalle().setEnabled(puedeEditar);
+        vista.getBtnActualizarDetalle1().setEnabled(puedeEditar);
+        vista.getBtnEliminarHoja().setEnabled("Borrador".equalsIgnoreCase(estado));
+        vista.getBtnCambiarEstado().setEnabled("Desarrollador".equalsIgnoreCase(rolUsuario) && puedeEditar);
     }
 
     private int filaSeleccionada() throws Exception {
-        int fila = vista.tblHojas.getSelectedRow();
+        int fila = vista.getTblHojas().getSelectedRow();
         if (fila < 0) throw new Exception("Selecciona una hoja de tiempo.");
         return fila;
     }
@@ -174,6 +284,12 @@ public class HojaTiempoControlador {
         h.setRecursoId(recursoId);
         h.setPeriodo(periodo.trim());
         h.guardar();
+    }
+
+    public void actualizarHoja(int id, int proyectoId, int recursoId,
+                               String periodo, String estado) throws Exception {
+        HojaTiempo h = new HojaTiempo(id, proyectoId, recursoId, periodo, estado);
+        h.actualizar();
     }
 
     public void cambiarEstado(int id, int proyectoId, int recursoId,
@@ -199,13 +315,13 @@ public class HojaTiempoControlador {
     }
 
     public DefaultTableModel obtenerTablaHojas() throws Exception {
-        String[] cols = {"ID", "Proyecto ID", "Recurso ID", "Periodo", "Estado"};
+        String[] cols = {"ID", "Proyecto ID", "Proyecto", "Recurso ID", "Periodo", "Estado"};
         DefaultTableModel modelo = new DefaultTableModel(cols, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
         for (HojaTiempo h : HojaTiempo.listarTodas()) {
             modelo.addRow(new Object[]{
-                h.getId(), h.getProyectoId(), h.getRecursoId(),
+                h.getId(), h.getProyectoId(), h.getProyectoNombre(), h.getRecursoId(),
                 h.getPeriodo(), h.getEstado()
             });
         }
@@ -220,11 +336,11 @@ public class HojaTiempoControlador {
         List<HojaTiempo> hojas = listarPorFiltro(null, recursoId,
                 periodo == null || periodo.trim().isEmpty() ? null : periodo.trim());
         DefaultTableModel modelo = new DefaultTableModel(
-                new String[]{"ID", "Proyecto ID", "Recurso ID", "Periodo", "Estado"}, 0) {
+                new String[]{"ID", "Proyecto ID", "Proyecto", "Recurso ID", "Periodo", "Estado"}, 0) {
             @Override public boolean isCellEditable(int fila, int columna) { return false; }
         };
         for (HojaTiempo hoja : hojas) {
-            modelo.addRow(new Object[]{hoja.getId(), hoja.getProyectoId(),
+            modelo.addRow(new Object[]{hoja.getId(), hoja.getProyectoId(), hoja.getProyectoNombre(),
                 hoja.getRecursoId(), hoja.getPeriodo(), hoja.getEstado()});
         }
         return modelo;
@@ -234,15 +350,15 @@ public class HojaTiempoControlador {
         return HojaTiempo.listarPorFiltro(proyectoId, recursoId, periodo);
     }
 
-    // ─────── DETALLE DE ACTIVIDAD ───────
-    public void guardarDetalle(String fecha, String descripcion,
-                               String horasStr, String modulo, int hojaTiempoId) throws Exception {
+    
+    public void guardarDetalle(String fecha, String descripcion, String horasStr, String modulo, int hojaTiempoId) throws Exception {
         double horas;
         try {
             horas = Double.parseDouble(horasStr.replace(",", "."));
         } catch (NumberFormatException e) {
             throw new Exception("Las horas deben ser un número válido (ej: 8 o 7.5).");
         }
+        
         DetalleActividad d = new DetalleActividad();
         d.setFecha(fecha.trim());
         d.setDescripcion(descripcion.trim());
@@ -263,13 +379,6 @@ public class HojaTiempoControlador {
         d.actualizar();
     }
 
-    public void asignarRecurso(int proyectoId, int recursoId) throws Exception {
-        modelo.Proyecto.asignarRecurso(proyectoId, recursoId);
-    }
-
-    public double costoAcumuladoProyecto(int proyectoId) throws Exception {
-        return modelo.HojaTiempo.costoAcumuladoProyecto(proyectoId);
-    }
 
     public DefaultTableModel obtenerTablaDetalles(int hojaTiempoId) throws Exception {
         String[] cols = {"ID", "Fecha", "Descripción", "Horas", "Módulo"};

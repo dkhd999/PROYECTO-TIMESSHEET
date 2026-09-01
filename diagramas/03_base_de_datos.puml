@@ -1,0 +1,107 @@
+@startuml GestionProyectos_BD
+skinparam entity {
+  BackgroundColor #E8F5E9
+  BorderColor #2E7D32
+  HeaderBackgroundColor #A5D6A7
+}
+skinparam note {
+  BackgroundColor #FFF9C4
+  BorderColor #F9A825
+}
+
+title Diagrama de Base de Proyecto_2 (MySQL)
+
+entity "proyecto" as proyecto {
+  * **id** INT <<PK>> <<AUTO_INCREMENT>>
+  --
+  * codigo VARCHAR(50) <<UNIQUE>>
+  * nombre VARCHAR(150)
+  * cliente VARCHAR(150)
+  * fecha_inicio DATE
+  * fecha_fin_estimada DATE
+  * estado ENUM('Activo','Inactivo') <<DEFAULT 'Activo'>>
+  --
+  CHECK (fecha_inicio <= fecha_fin_estimada)
+}
+
+entity "recurso" as recurso {
+  * **id** INT <<PK>> <<AUTO_INCREMENT>>
+  --
+  * nombre VARCHAR(100)
+  * cedula VARCHAR(10) <<UNIQUE>>
+  * correo VARCHAR(150) <<UNIQUE>>
+  * rol VARCHAR(50)
+  * tarifa_base DECIMAL(10,2)
+  * tipo ENUM('Junior','Senior')
+  * estado ENUM('Activo','Inactivo') <<DEFAULT 'Activo'>>
+  --
+  CHECK (tarifa_base >= 0)
+}
+
+entity "usuario" as usuario {
+  * **id** INT <<PK>> <<AUTO_INCREMENT>>
+  --
+  * usuario VARCHAR(50) <<UNIQUE>>
+  * contrasena VARCHAR(255)
+  * rol ENUM('Administrador','Desarrollador')
+  * tipo ENUM('Gestor','Recurso')
+  * recurso_id INT <<FK>> <<NULL>>
+  * estado ENUM('Activo','Inactivo') <<DEFAULT 'Activo'>>
+  --
+  CHECK (tipo='Recurso' AND recurso_id IS NOT NULL)
+  CHECK (tipo='Gestor' AND recurso_id IS NULL)
+}
+
+entity "proyecto_recurso" as pr {
+  * **proyecto_id** INT <<PK,FK>>
+  * **recurso_id** INT <<PK,FK>>
+}
+
+entity "hoja_tiempo" as ht {
+  * **id** INT <<PK>> <<AUTO_INCREMENT>>
+  --
+  * proyecto_id INT <<FK>>
+  * recurso_id INT <<FK>>
+  * periodo VARCHAR(50)
+  * estado ENUM('Borrador','Enviada','Aprobada','Rechazada','Inactiva') <<DEFAULT 'Borrador'>>
+}
+
+entity "detalle_actividad" as da {
+  * **id** INT <<PK>> <<AUTO_INCREMENT>>
+  --
+  * fecha DATE
+  * descripcion VARCHAR(500)
+  * horas DECIMAL(5,2)
+  * modulo VARCHAR(100)
+  * hoja_tiempo_id INT <<FK>>
+  --
+  CHECK (horas > 0 AND horas <= 24)
+  UNIQUE (fecha, modulo, hoja_tiempo_id)
+}
+
+' ── Relaciones ──
+proyecto ||--|{ pr : "tiene"
+recurso ||--|{ pr : "se asigna a"
+proyecto ||--|{ ht : "registra"
+recurso ||--|{ ht : "belongs to"
+ht ||--o{ da : "detalla"
+
+' ── Nota ──
+note bottom of recurso
+  cedula valida con algoritmo
+  Modulo 10 ecuatoriano
+end note
+
+note bottom of da
+  Maximo 8 horas/dia
+  Maximo 60 horas/semana
+end note
+
+note right of ht
+  Estados:
+  Borrador -> Enviada
+  Enviada -> Aprobada/Rechazada
+  Rechazada -> Enviada (reenvio)
+end note
+
+@enduml
