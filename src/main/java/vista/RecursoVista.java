@@ -48,11 +48,15 @@ public class RecursoVista extends javax.swing.JFrame {
         txtUsuarioCreado = new javax.swing.JTextField();
         lblContrasena = new javax.swing.JLabel();
         txtContrasenaDev = new javax.swing.JTextField();
+        btnSiguiente = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblNombre.setText("Nombres:");
+
+        txtNombre.addActionListener(this::txtNombreActionPerformed);
 
         lblNombre1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblNombre1.setText("Correo");
@@ -72,8 +76,10 @@ public class RecursoVista extends javax.swing.JFrame {
         cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Junior", "Senior" }));
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
         btnEliminar.setText("Inabilitar ");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         tblRecursos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,15 +98,23 @@ public class RecursoVista extends javax.swing.JFrame {
         jLabel1.setText("Registro Desarrollador");
 
         btnHabilitar.setText("Habilitar");
+        btnHabilitar.addActionListener(this::btnHabilitarActionPerformed);
 
         lblNumeroCedula.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblNumeroCedula.setText("Nº Cédula");
+
+        txtNumeroCedula.addActionListener(this::txtNumeroCedulaActionPerformed);
 
         lblUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblUsuario.setText("Usuario:");
 
         lblContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblContrasena.setText("Contraseña:");
+
+        btnSiguiente.setText("Siguiente");
+
+        btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(this::btnRegresarActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,12 +144,13 @@ public class RecursoVista extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNumeroCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtUsuarioCreado, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtContrasenaDev, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtRol, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                            .addComponent(txtTarifaBase, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                            .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtRol)
+                                .addComponent(txtTarifaBase)
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUsuarioCreado, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtContrasenaDev, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
@@ -143,6 +158,12 @@ public class RecursoVista extends javax.swing.JFrame {
                 .addGap(342, 342, 342)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSiguiente)
+                .addGap(14, 14, 14))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,11 +211,34 @@ public class RecursoVista extends javax.swing.JFrame {
                             .addComponent(btnEliminar)
                             .addComponent(btnHabilitar)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSiguiente)
+                    .addComponent(btnRegresar))
+                .addGap(12, 12, 12))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnHabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabilitarActionPerformed
+    }//GEN-LAST:event_btnHabilitarActionPerformed
+
+    private void txtNumeroCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroCedulaActionPerformed
+    }//GEN-LAST:event_txtNumeroCedulaActionPerformed
 
     public javax.swing.JButton getBtnGuardar() {
         return btnGuardar;
@@ -206,6 +250,14 @@ public class RecursoVista extends javax.swing.JFrame {
 
     public javax.swing.JButton getBtnHabilitar() {
         return btnHabilitar;
+    }
+
+    public javax.swing.JButton getBtnSiguiente() {
+        return btnSiguiente;
+    }
+
+    public javax.swing.JButton getBtnRegresar() {
+        return btnRegresar;
     }
 
     public javax.swing.JComboBox<String> getCmbTipo() {
@@ -248,6 +300,8 @@ public class RecursoVista extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnHabilitar;
+    private javax.swing.JButton btnRegresar;
+    private javax.swing.JButton btnSiguiente;
     private javax.swing.JComboBox<String> cmbTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

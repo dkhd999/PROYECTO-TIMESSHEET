@@ -16,7 +16,7 @@ public class HojaTiempo {
     private String proyectoNombre;
     private int recursoId;
     private String periodo;
-    private String estado; // Borrador | Enviada | Aprobada | Rechazada
+    private String estado; 
     private List<DetalleActividad> detalles;
 
     public HojaTiempo() {
@@ -38,7 +38,7 @@ public class HojaTiempo {
         this.detalles = new ArrayList<>();
     }
 
-    // ─────── Lógica de negocio (RF-03.2, RF-03.7, RF-07.3) ───────
+    // ─────── Lógica de negocio 
     public void cargarDetalles() throws Exception {
         this.detalles = DetalleActividad.listarPorHoja(this.id);
     }
@@ -73,19 +73,19 @@ public class HojaTiempo {
     }
 
     private void validarEstadoModificable() throws Exception {
-        // RF-07.2
+       
         if (!"Borrador".equalsIgnoreCase(this.estado)
             && !"Rechazada".equalsIgnoreCase(this.estado))
             throw new Exception("Solo se pueden modificar hojas en estado Borrador");
     }
 
     private void validarHorasMaximas() throws Exception {
-        // RF-03.7
+       
         if (calcularTotalHoras() > maxHorasSemana)
             throw new Exception("El total de horas (" + calcularTotalHoras() + ") supera el máximo de " + maxHorasSemana + " horas semanales.");
     }
 
-    // ─────── CRUD SQL ───────
+    //CRUD SQL 
     public void guardar() throws Exception {
         rangoPeriodo();
         validarAsignacion();
@@ -131,9 +131,7 @@ public class HojaTiempo {
         }
     }
 
-    // RF-03.5: El desarrollador es el unico que puede enviar la hoja.
-    // El gerente NO puede aprobar ni rechazar. Solo Borrador -> Enviada.
-    // Invoca al stored procedure sp_enviar_hoja de la base de datos.
+  
     public void cambiarEstado(String nuevoEstado, String rol) throws Exception {
         validarEstadoModificable();
         if (rol == null || !"Desarrollador".equalsIgnoreCase(rol))
@@ -156,7 +154,7 @@ public class HojaTiempo {
         this.estado = "Enviada";
     }
 
-    // RF-03.6: Solo eliminar si está en Borrador
+ 
     public void eliminar() throws Exception {
         if (!"Borrador".equalsIgnoreCase(this.estado))
             throw new Exception("Solo se puede eliminar una hoja de tiempo en estado 'Borrador'.");
@@ -228,7 +226,7 @@ public class HojaTiempo {
         return lista;
     }
 
-    // ─────── Getters & Setters ───────
+
     public int getId() {
         return id;
     }
@@ -277,10 +275,7 @@ public class HojaTiempo {
         return detalles;
     }
 
-    /**
-     * Retorna todas las hojas de tiempo de un recurso en un mes especifico (no inactivas).
-     * El mes se extrae del primer dia del periodo (ej: "2026-08-01 / 2026-08-07" -> 2026-08).
-     */
+   
     public static List<HojaTiempo> listarPorRecursoYMes(int recursoId, String mesAnio) throws Exception {
         List<HojaTiempo> lista = new ArrayList<>();
         String sql = "SELECT h.*, p.nombre AS proyecto_nombre FROM hoja_tiempo h "

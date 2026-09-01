@@ -15,10 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
-/**
- * Controlador de generacion de reportes PDF.
- * Obtiene los datos del modelo y los renderiza con iTextPDF. (RF-06.4)
- */
+
 public class ReportePDF {
 
     public DefaultComboBoxModel<HojaTiempo> cargarHojas() throws Exception {
@@ -130,24 +127,11 @@ public class ReportePDF {
         doc.add(new Paragraph("Total Horas Mensuales: " + String.format("%.2f", totalHorasMes), fuenteResumen));
         doc.add(new Paragraph("Costo Total Mensual: $" + String.format("%.2f", totalCostoMes), fuenteResumen));
 
-        // ── Espacio de firma ──
-        doc.add(Chunk.NEWLINE);
-        doc.add(Chunk.NEWLINE);
-        doc.add(Chunk.NEWLINE);
-        doc.add(new Paragraph("_________________________________", fuenteNormal));
-        doc.add(new Paragraph("Firma del Cliente", fuenteNormal));
-        doc.add(new Paragraph("Nombre: ___________________________", fuenteNormal));
-        doc.add(new Paragraph("Fecha:  ___________________________", fuenteNormal));
-
         doc.close();
         return rutaArchivo;
     }
 
-    /**
-     * Invoca al stored procedure sp_reporte_mensual_recurso.
-     * Llena la lista de hojas del mes (primer result set) y los totales
-     * en totalMensual[0]=horas y totalMensual[1]=costo (segundo result set).
-     */
+  
     private List<HojaTiempo> listarMensualPorSP(int recursoId, String mesAnio,
                                                double[] totalMensual) throws Exception {
         List<HojaTiempo> hojas = new ArrayList<>();

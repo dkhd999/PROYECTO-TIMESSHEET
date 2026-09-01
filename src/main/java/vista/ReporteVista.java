@@ -37,6 +37,8 @@ public class ReporteVista extends javax.swing.JFrame {
         cmbnNombreDev = new javax.swing.JComboBox<>();
         lblNombreDev = new javax.swing.JLabel();
         lblHoja = new javax.swing.JLabel();
+        btnSiguiente = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,6 +62,10 @@ public class ReporteVista extends javax.swing.JFrame {
 
         lblHoja.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblHoja.setText("Hoja:");
+
+        btnSiguiente.setText("Siguiente");
+
+        btnRegresar.setText("Regresar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,6 +101,12 @@ public class ReporteVista extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnGenerarPDF)
                 .addGap(142, 142, 142))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRegresar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSiguiente)
+                .addGap(17, 17, 17))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +133,11 @@ public class ReporteVista extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSeleccionarRuta)
                     .addComponent(btnGenerarPDF))
-                .addGap(91, 91, 91))
+                .addGap(91, 91, 91)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSiguiente)
+                    .addComponent(btnRegresar))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -151,9 +167,19 @@ public class ReporteVista extends javax.swing.JFrame {
         return txtRecursoId;
     }
 
+    public javax.swing.JButton getBtnSiguiente() {
+        return btnSiguiente;
+    }
+
+    public javax.swing.JButton getBtnRegresar() {
+        return btnRegresar;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarPDF;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnSeleccionarRuta;
+    private javax.swing.JButton btnSiguiente;
     private javax.swing.JComboBox<modelo.HojaTiempo> cmbHojas;
     private javax.swing.JComboBox<modelo.Recurso> cmbnNombreDev;
     private javax.swing.JLabel jLabel1;

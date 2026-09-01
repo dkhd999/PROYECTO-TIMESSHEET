@@ -12,7 +12,6 @@ public class DesarrolladorSenior extends Recurso {
         super(id, nombre, cedula, correo, "Desarrollador", tarifaBase, "Senior", estado);
     }
 
-    // RF-02.2: Tarifa horaria fija para desarrolladores Senior
     @Override
     public double calcularTarifaHora() {
         return getTarifaBase();

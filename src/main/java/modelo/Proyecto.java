@@ -13,9 +13,9 @@ public class Proyecto {
     private String codigo;
     private String nombre;
     private String cliente;
-    private String fechaInicio;   // formato yyyy-MM-dd
-    private String fechaFin;      // formato yyyy-MM-dd
-    private String estado;        // "Activo" | "Inactivo"
+    private String fechaInicio;   
+    private String fechaFin;      
+    private String estado;        
 
     public Proyecto() { this.estado = "Activo"; }
 
@@ -30,7 +30,7 @@ public class Proyecto {
         this.estado = estado;
     }
 
-    // ─────── Validaciones (RF-01.6, RF-07.3) ───────
+    // ─────── Validaciones
     private void validar() throws Exception {
         if (codigo == null || codigo.trim().isEmpty())
             throw new Exception("El código del proyecto es obligatorio.");
@@ -48,7 +48,7 @@ public class Proyecto {
         catch (DateTimeParseException e) { throw new Exception("La fecha " + nombre + " debe usar el formato yyyy-MM-dd."); }
     }
 
-    // ─────── CRUD SQL ───────
+    // CRUD SQL
     public void guardar() throws Exception {
         validar();
         // RF-01.6: Código único
@@ -90,7 +90,7 @@ public class Proyecto {
         }
     }
 
-    // RF-01.5: Solo inactiva si no tiene hojas de tiempo activas
+   
     public void eliminar() throws Exception {
         String checkSql = "SELECT COUNT(*) FROM hoja_tiempo WHERE proyecto_id=? AND estado IN ('Borrador','Enviada','Aprobada')";
         try (Connection conn = new ConexionBDD().conectar();
@@ -146,7 +146,9 @@ public class Proyecto {
     public static List<Proyecto> listarPorRecurso(int recursoId) throws Exception {
         List<Proyecto> lista = new ArrayList<>();
         String sql = "SELECT p.* FROM proyecto p JOIN proyecto_recurso pr ON pr.proyecto_id=p.id "
-                   + "WHERE pr.recurso_id=? AND p.estado='Activo' ORDER BY p.nombre";
+                   + "JOIN recurso r ON r.id=pr.recurso_id "
+                   + "WHERE pr.recurso_id=? AND r.estado='Activo' "
+                   + "AND p.estado IN ('Activo','Finalizado') ORDER BY p.nombre";
         try (Connection conn = new ConexionBDD().conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, recursoId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -193,7 +195,7 @@ public class Proyecto {
         }
     }
 
-    // ─────── Getters & Setters ───────
+   
 
     public int getId() {
         return id;

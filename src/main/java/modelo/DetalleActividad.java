@@ -28,7 +28,7 @@ public class DetalleActividad {
         this.hojaTiempoId = hojaTiempoId;
     }
 
-    // ─────── Validaciones (RF-04.5, RF-07.1, RF-07.3) ───────
+    // ─────── Validaciones 
     private void validar() throws Exception {
         if (horas <= 0 || horas > 8)
             throw new Exception("Las horas deben ser mayores a 0 y no exceder 8 horas por día.");
@@ -90,7 +90,7 @@ public class DetalleActividad {
         }
     }
 
-    // ─────── CRUD SQL ───────
+    // CRUD SQL 
     public void guardar() throws Exception {
         validar();
         String sql = "INSERT INTO detalle_actividad (fecha, descripcion, horas, modulo, hoja_tiempo_id) VALUES (?,?,?,?,?)";
@@ -155,7 +155,6 @@ public class DetalleActividad {
         return lista;
     }
 
-    // ─────── Getters & Setters ───────
     public int getId() {
         return id;
     }

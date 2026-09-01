@@ -18,15 +18,11 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
-/**
- * Controlador único para Recurso.
- * Gestiona la captura de eventos en la vista y las operaciones de datos del modelo.
- */
 public class RecursoControlador {
 
     private RecursoVista vista;
 
-    // Constructor sin vista (para llamadas desde otros controladores o combos)
+    // Constructor sin vista 
     public RecursoControlador() {}
 
     // Constructor vinculante con la vista
@@ -59,7 +55,7 @@ public class RecursoControlador {
         cargarTabla();
     }
 
-    // ─────── EVENTOS Y MANEJO DE VISTA ───────
+    // EVENTOS Y MANEJO DE VISTA
     private void actualizarTarifa() {
         String tipo = String.valueOf(vista.getCmbTipo().getSelectedItem());
         vista.getTxtTarifaBase().setText("Senior".equalsIgnoreCase(tipo) ? "60.00" : "25.00");

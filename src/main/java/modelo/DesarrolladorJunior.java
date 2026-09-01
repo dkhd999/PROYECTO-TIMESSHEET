@@ -12,7 +12,7 @@ public class DesarrolladorJunior extends Recurso {
         super(id, nombre, cedula, correo, "Desarrollador", tarifaBase, "Junior", estado);
     }
 
-    // RF-02.2: Tarifa fija sin bono
+    
     @Override
     public double calcularTarifaHora() {
         return getTarifaBase();

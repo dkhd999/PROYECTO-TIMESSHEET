@@ -6,18 +6,14 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
-/**
- * Controlador único de Proyectos.
- * Gestiona los eventos de la vista y la preparación de datos para la interfaz y el modelo.
- */
 public class ProyectoControlador {
 
     private ProyectoVista vista;
 
-    // Constructor por defecto (para llamadas de utilidades o combos desde otros controladores)
+    // Constructor por defecto 
     public ProyectoControlador() {}
 
-    // Constructor con Vista (vinculará los eventos e inicializará la tabla)
+    // Constructor con Vista 
     public ProyectoControlador(ProyectoVista vista) {
         this.vista = vista;
         inicializarEventos();
@@ -31,7 +27,7 @@ public class ProyectoControlador {
         vista.getBtnHabilitar().addActionListener(event -> habilitarDesdeVista());
     }
 
-    // ─────── ACCIONES DESDE LA VISTA ───────
+    //  ACCIONES DESDE LA VISTA 
     public void cargarTabla() {
         if (vista == null) return;
         try {
@@ -76,7 +72,7 @@ public class ProyectoControlador {
         }
     }
 
-    // ─────── MÉTODOS CRUD DIRECTOS ───────
+    // MÉTODOS CRUD DIRECTOS 
     public void guardar(String codigo, String nombre, String cliente, String fechaInicio, String fechaFin) throws Exception {
         Proyecto p = new Proyecto();
         p.setCodigo(codigo.trim());
@@ -102,7 +98,7 @@ public class ProyectoControlador {
         p.activar();
     }
 
-    // ─────── GENERADORES DE MODELOS PARA SWING ───────
+    //  GENERADORES DE MODELOS PARA SWING 
     public DefaultTableModel obtenerTablaProyectos() throws Exception {
         String[] columnas = {"ID", "Código", "Nombre", "Cliente", "Fecha Inicio", "Fecha Fin", "Estado"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
@@ -142,7 +138,7 @@ public class ProyectoControlador {
         return modelo;
     }
 
-    // ─────── AUXILIARES DE INTERFAZ ───────
+    // AUXILIARES DE INTERFAZ 
     private Proyecto proyectoSeleccionado() throws Exception {
         int fila = vista.getTblProyectos().getSelectedRow();
         if (fila < 0) throw new Exception("Selecciona un proyecto de la tabla.");

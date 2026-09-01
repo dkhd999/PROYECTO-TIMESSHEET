@@ -4,7 +4,6 @@ import modelo.HojaTiempo;
 import modelo.Recurso;
 import vista.ReporteVista;
 
-/** Coordina ReporteVista y delega la generación del documento al controlador de reportes. */
 public class ReporteControlador {
 
     private final ReporteVista vista;

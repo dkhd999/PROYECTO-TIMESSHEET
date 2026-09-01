@@ -31,15 +31,15 @@ public abstract class Recurso {
         this.estado = estado;
     }
 
-    // RF-02.1: Método polimórfico que cada subclase implementa con su propia lógica
+    
     public abstract double calcularTarifaHora();
 
-    // RF-02.5: Costo de las horas registradas según tarifa propia
+   
     public double calcularCostoHoras(double horas) {
         return horas * calcularTarifaHora();
     }
 
-    // ─────── CRUD SQL ───────
+    //  CRUD SQL 
     public void guardar() throws Exception {
         guardar(null, null);
     }
@@ -166,7 +166,7 @@ public abstract class Recurso {
         }
     }
 
-    // ─────── Getters & Setters ───────
+    
     public int getId() {
         return id;
     }

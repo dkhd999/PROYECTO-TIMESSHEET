@@ -4,7 +4,6 @@ import modelo.Proyecto;
 import modelo.Recurso;
 import vista.AsignacionVista;
 
-/** Coordina la pantalla de asignaciones sin colocar lógica de negocio en la vista. */
 public class AsignacionControlador {
 
     private final AsignacionVista vista;

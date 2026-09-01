@@ -11,10 +11,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import vista.HojaTiempoVista;
 
-/**
- * Controlador de Hoja de Tiempo y Detalle de Actividad.
- * La Vista llama a estos métodos directamente; no tiene lógica propia.
- */
+
 public class HojaTiempoControlador {
 
     private final HojaTiempoVista vista;
@@ -107,6 +104,11 @@ public class HojaTiempoControlador {
                 vista.getTblHojas().setRowSelectionInterval(0, 0);
             }
             limpiarCamposDetalle();
+            // Activamos los campos de detalle para que el desarrollo pueda
+            // ingresar la fecha de inicio (y los demas datos) de la hoja recien creada
+            actualizarPermisos("Borrador");
+            vista.getTxtFechaDetalle().setEnabled(true);
+            vista.getTxtFechaDetalle().requestFocusInWindow();
         } catch (Exception ex) { mostrarError(ex); }
     }
 private void guardarDetalleDesdeVista() {
@@ -261,6 +263,11 @@ private void guardarDetalleDesdeVista() {
         vista.getBtnActualizarDetalle1().setEnabled(puedeEditar);
         vista.getBtnEliminarHoja().setEnabled("Borrador".equalsIgnoreCase(estado));
         vista.getBtnCambiarEstado().setEnabled("Desarrollador".equalsIgnoreCase(rolUsuario) && puedeEditar);
+        // Habilitar los campos de detalle (incl. fecha de inicio) solo en hoja editable
+        vista.getTxtFechaDetalle().setEnabled(puedeEditar);
+        vista.getTxtDescripcion().setEnabled(puedeEditar);
+        vista.getTxtHoras().setEnabled(puedeEditar);
+        vista.getTxtModulo().setEnabled(puedeEditar);
     }
 
     private int filaSeleccionada() throws Exception {
@@ -277,7 +284,7 @@ private void guardarDetalleDesdeVista() {
     private void mostrar(String mensaje) { javax.swing.JOptionPane.showMessageDialog(vista, mensaje); }
     private void mostrarError(Exception ex) { javax.swing.JOptionPane.showMessageDialog(vista, "Error: " + ex.getMessage()); }
 
-    // ─────── HOJA DE TIEMPO ───────
+    // HOJA DE TIEMPO
     public void guardarHoja(int proyectoId, int recursoId, String periodo) throws Exception {
         HojaTiempo h = new HojaTiempo();
         h.setProyectoId(proyectoId);
@@ -394,7 +401,7 @@ private void guardarDetalleDesdeVista() {
         return modelo;
     }
 
-    // ─────── CALCULAR TOTALES ───────
+    //  CALCULAR TOTALES 
     public double calcularTotalHoras(int hojaTiempoId) throws Exception {
         HojaTiempo h = new HojaTiempo();
         h.setId(hojaTiempoId);
