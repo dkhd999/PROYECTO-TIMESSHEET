@@ -1,9 +1,11 @@
+controlador\MenuControlador.class
 controlador\RecursoControlador$3.class
 controlador\RecursoControlador.class
 controlador\ProyectoControlador.class
 controlador\ProyectoControlador$1.class
 controlador\AsignacionControlador.class
 controlador\RecursoControlador$1.class
+vista\MenuVista.class
 vista\AsignacionVista.class
 controlador\ProyectoControlador$2.class
 controlador\RecursoControlador$2.class

@@ -39,6 +39,7 @@ public class ReporteVista extends javax.swing.JFrame {
         lblHoja = new javax.swing.JLabel();
         btnSiguiente = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
+        btnIrMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,6 +67,9 @@ public class ReporteVista extends javax.swing.JFrame {
         btnSiguiente.setText("Siguiente");
 
         btnRegresar.setText("Regresar");
+
+        btnIrMenu.setText("Ir al Menú");
+        btnIrMenu.addActionListener(this::btnIrMenuActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,6 +107,8 @@ public class ReporteVista extends javax.swing.JFrame {
                 .addGap(142, 142, 142))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnIrMenu)
+                .addGap(39, 39, 39)
                 .addComponent(btnRegresar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSiguiente)
@@ -136,12 +142,17 @@ public class ReporteVista extends javax.swing.JFrame {
                 .addGap(91, 91, 91)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSiguiente)
-                    .addComponent(btnRegresar))
+                    .addComponent(btnRegresar)
+                    .addComponent(btnIrMenu))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnIrMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIrMenuActionPerformed
 
     public javax.swing.JComboBox<modelo.HojaTiempo> getCmbHojas() {
         return cmbHojas;
@@ -175,8 +186,13 @@ public class ReporteVista extends javax.swing.JFrame {
         return btnRegresar;
     }
 
+    public javax.swing.JButton getBtnIrMenu() {
+        return btnIrMenu;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarPDF;
+    private javax.swing.JButton btnIrMenu;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnSeleccionarRuta;
     private javax.swing.JButton btnSiguiente;

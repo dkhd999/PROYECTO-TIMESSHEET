@@ -45,6 +45,7 @@ public class ReporteEstadisticoVista extends javax.swing.JFrame {
         btnGenerarPDF = new javax.swing.JButton();
         panelGrafico = new javax.swing.JPanel();
         btnRegresar = new javax.swing.JButton();
+        btnIrMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,6 +91,9 @@ public class ReporteEstadisticoVista extends javax.swing.JFrame {
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(this::btnRegresarActionPerformed);
 
+        btnIrMenu.setText("Ir al Menú");
+        btnIrMenu.addActionListener(this::btnIrMenuActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,8 +135,10 @@ public class ReporteEstadisticoVista extends javax.swing.JFrame {
                 .addGap(24, 24, 24))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(222, 222, 222))
+                .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(74, 74, 74)
+                .addComponent(btnIrMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,7 +180,9 @@ public class ReporteEstadisticoVista extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addComponent(panelGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
                         .addGap(180, 180, 180)
-                        .addComponent(btnRegresar)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnRegresar)
+                            .addComponent(btnIrMenu))
                         .addGap(31, 31, 31))))
         );
 
@@ -188,6 +196,10 @@ public class ReporteEstadisticoVista extends javax.swing.JFrame {
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnIrMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIrMenuActionPerformed
 
     // ─────── Getters para el controlador (sin lógica de negocio) ───────
     public javax.swing.JComboBox<modelo.Proyecto> getCmbxProyectos() {
@@ -227,6 +239,10 @@ public class ReporteEstadisticoVista extends javax.swing.JFrame {
         return btnRegresar;
     }
 
+    public javax.swing.JButton getBtnIrMenu() {
+        return btnIrMenu;
+    }
+
     public javax.swing.JPanel getPanelGrafico() {
         return panelGrafico;
     }
@@ -263,6 +279,7 @@ public class ReporteEstadisticoVista extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TxtIDReporteE;
     private javax.swing.JButton btnGenerarPDF;
+    private javax.swing.JButton btnIrMenu;
     private javax.swing.JButton btnPrevisualizar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cmbxEstadoProyecto;

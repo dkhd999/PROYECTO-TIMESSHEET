@@ -12,27 +12,21 @@ import java.util.List;
 public class ReporteEstadistico {
 
     /** Resultado individual: horas de un desarrollo en un proyecto y rango. */
+    /** Resultado individual: horas de un desarrollo en un proyecto y rango. */
     public static class DatoEstadistica {
         private final String desarrollador;
         private final String tipo;
         private final double totalHoras;
-        private final int id;
 
         public DatoEstadistica(String desarrollador, String tipo, double totalHoras) {
-            this(desarrollador, tipo, totalHoras, 0);
-        }
-
-        public DatoEstadistica(String desarrollador, String tipo, double totalHoras, int id) {
             this.desarrollador = desarrollador;
             this.tipo = tipo;
             this.totalHoras = totalHoras;
-            this.id = id;
         }
 
         public String getDesarrollador() { return desarrollador; }
         public String getTipo() { return tipo; }
         public double getTotalHoras() { return totalHoras; }
-        public int getId() { return id; }
     }
 
    
@@ -109,8 +103,7 @@ public class ReporteEstadistico {
                         lista.add(new DatoEstadistica(
                             rs.getString("proyecto"),
                             "Proyecto",
-                            rs.getDouble("total_horas"),
-                            rs.getInt("proyecto_id")
+                            rs.getDouble("total_horas")
                         ));
                     }
                 }
@@ -121,29 +114,6 @@ public class ReporteEstadistico {
             throw new Exception(msg == null || msg.trim().isEmpty() ? "Error al consultar el reporte." : msg.trim());
         }
         return lista;
-    }
-
-    /** Archiva un registro del reporte por proyecto (resumen horas de una consulta). */
-    public static ResultadoGuardado guardarPorProyecto(
-            int proyectoId, String desarrollador, String fechaInicio, String fechaFin, double horas)
-            throws Exception {
-        String sql = "INSERT INTO reporte_estadistico "
-                + "(proyecto_id, desarrollador, tipo, fecha_inicio, fecha_fin, total_horas) "
-                + "VALUES (?, ?, 'PROYECTO', ?, ?, ?)";
-        try (Connection conn = new ConexionBDD().conectar();
-             java.sql.PreparedStatement p = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
-            p.setInt(1, proyectoId);
-            p.setString(2, desarrollador);
-            p.setString(3, fechaInicio);
-            p.setString(4, fechaFin);
-            p.setDouble(5, horas);
-            p.executeUpdate();
-            int id = 0;
-            try (ResultSet rs = p.getGeneratedKeys()) {
-                if (rs.next()) id = rs.getInt(1);
-            }
-            return new ResultadoGuardado(id, 1, horas);
-        }
     }
 
    // calcula

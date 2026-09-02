@@ -38,12 +38,12 @@
                           <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="txtHojaId" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="274" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="219" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace min="34" pref="34" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtNombreDev" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cmbnNombreDev" alignment="0" pref="216" max="32767" attributes="0"/>
                           <Component id="cmbHojas" alignment="0" pref="216" max="32767" attributes="0"/>
                           <Component id="txtRecursoId" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -60,6 +60,8 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
+              <Component id="btnIrMenu" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
               <Component id="btnRegresar" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnSiguiente" min="-2" max="-2" attributes="0"/>
@@ -84,7 +86,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtNombreDev" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbnNombreDev" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblNombreDev" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -99,8 +101,9 @@
               </Group>
               <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnSiguiente" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnIrMenu" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnRegresar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSiguiente" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
           </Group>
@@ -111,33 +114,24 @@
     <Component class="javax.swing.JComboBox" name="cmbHojas">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
+          <StringArray count="1">
             <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
           </StringArray>
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;modelo.HojaTiempo&gt;"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnSeleccionarRuta">
       <Properties>
         <Property name="text" type="java.lang.String" value="Seleccionar Ruta"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSeleccionarRutaActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnGenerarPDF">
       <Properties>
         <Property name="text" type="java.lang.String" value="Generar PDF"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarPDFActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtHojaId">
     </Component>
@@ -167,7 +161,10 @@
         <Property name="text" type="java.lang.String" value="Generar Reporte "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtNombreDev">
+    <Component class="javax.swing.JComboBox" name="cmbnNombreDev">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;modelo.Recurso&gt;"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblNombreDev">
       <Properties>
@@ -194,8 +191,13 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Regresar"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnIrMenu">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ir al Men&#xfa;"/>
+      </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegresarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIrMenuActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

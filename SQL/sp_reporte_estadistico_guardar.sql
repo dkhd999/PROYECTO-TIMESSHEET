@@ -28,12 +28,17 @@ CREATE TABLE reporte_estadistico (
 
 -- ════════════════════════════════════════════════════════════
 -- SP: sp_guardar_reporte_estadistico
--- Calcula las horas por desarrollo de un proyecto en un rango de
--- fechas y archiva un registro por desarrollo en reporte_estadistico.
--- Valida: proyecto existe y esta Activo/Finalizado, y que el rango
--- de fechas caiga dentro del periodo del proyecto.
+-- Calcula las horas por desarrollo de un proyecto y archiva un
+-- registro por desarrollo en reporte_estadistico.
 --
--- Uso: CALL sp_guardar_reporte_estadistico(idProyecto, '2026-08-01', '2026-08-31')
+-- IMPORTANTE: el rango de fechas se IGNORA (no filtra las horas).
+-- Se archivan las horas TOTALES del proyecto, de forma consistente
+-- con el reporte (sp_reporte_estadistico_horas), que tambien ignora
+-- la fecha.
+--
+-- Valida: proyecto existe y esta Activo/Finalizado.
+--
+-- Uso: CALL sp_guardar_reporte_estadistico(idProyecto, '2026-01-01', '2026-12-31')
 -- Devuelve (out): @filas guardadas, @total_horas general y @msg.
 -- ════════════════════════════════════════════════════════════
 DROP PROCEDURE IF EXISTS sp_guardar_reporte_estadistico;
@@ -48,8 +53,6 @@ CREATE PROCEDURE sp_guardar_reporte_estadistico(
 )
 BEGIN
     DECLARE v_estado         VARCHAR(20);
-    DECLARE v_fecha_inic_proy DATE;
-    DECLARE v_fecha_fin_proy  DATE;
     DECLARE v_total           DECIMAL(10,2) DEFAULT 0;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -61,9 +64,9 @@ BEGIN
 
     START TRANSACTION;
 
-    -- 1. Validar proyecto y su estado / fechas vigentes
-    SELECT estado, fecha_inicio, fecha_fin_estimada
-      INTO v_estado, v_fecha_inic_proy, v_fecha_fin_proy
+    -- 1. Validar proyecto y su estado
+    SELECT estado
+      INTO v_estado
       FROM proyecto
      WHERE id = p_proyecto_id
      LIMIT 1;
@@ -74,14 +77,9 @@ BEGIN
     ELSEIF v_estado = 'Inactivo' THEN
         SET p_msg = 'El reporte solo aplica a proyectos Activos o Finalizados.';
         ROLLBACK;
-    ELSEIF p_fecha_inicio > p_fecha_fin THEN
-        SET p_msg = 'La fecha de inicio debe ser anterior o igual a la fecha de fin.';
-        ROLLBACK;
-    ELSEIF p_fecha_inicio < v_fecha_inic_proy OR p_fecha_fin > v_fecha_fin_proy THEN
-        SET p_msg = 'El rango de fechas debe estar dentro del periodo del proyecto.';
-        ROLLBACK;
     ELSE
-        -- 2. Archivar un registro por desarrollo
+        -- 2. Archivar un registro por desarrollo con las horas TOTALES del
+        --    proyecto (sin filtro por fecha, como exige el reporte)
         INSERT INTO reporte_estadistico (proyecto_id, desarrollador, tipo, fecha_inicio, fecha_fin, total_horas)
         SELECT h.proyecto_id,
                r.nombre,
@@ -94,7 +92,6 @@ BEGIN
           JOIN recurso r     ON r.id = h.recurso_id
          WHERE h.proyecto_id = p_proyecto_id
            AND h.estado <> 'Inactiva'
-           AND d.fecha BETWEEN p_fecha_inicio AND p_fecha_fin
          GROUP BY h.proyecto_id, r.id, r.nombre, r.tipo
          ORDER BY r.nombre;
 
@@ -109,7 +106,7 @@ BEGIN
         SET p_msg = CONCAT('Reporte archivado: ', p_filas, ' registros.');
 
         IF p_filas = 0 THEN
-            SET p_msg = 'No hay horas registradas para el proyecto en el rango indicado.';
+            SET p_msg = 'No hay horas registradas para el proyecto seleccionado.';
         END IF;
     END IF;
 

@@ -37,14 +37,9 @@ public class ReporteEstadisticoControlador {
     }
 
     private void cargarProyectos() {
-        // Reporte por desarrollador + rango de fechas; el combo de proyecto
-        // se mantiene visible por compatibilidad pero no condiciona el reporte.
+        // Reporte por PROYECTO + desarrollador + rango de fechas.
+        // El combo de proyecto filtra los proyectos segun el estado elegido.
         try {
-            Recurso desarrollador = (Recurso) vista.getCmbxNombreDesarrollador().getSelectedItem();
-            if (desarrollador == null) {
-                vista.getCmbxProyectos().setModel(new javax.swing.DefaultComboBoxModel<>());
-                return;
-            }
             String estadoFiltro = vista.getCmbxEstadoProyecto().getSelectedItem() == null
                     ? "Activo" : vista.getCmbxEstadoProyecto().getSelectedItem().toString();
             javax.swing.DefaultComboBoxModel<Proyecto> modelo = new javax.swing.DefaultComboBoxModel<>();
@@ -82,38 +77,71 @@ public class ReporteEstadisticoControlador {
         vista.getCmbxEstadoProyecto().addActionListener(event -> cargarProyectos());
     }
 
+    private Proyecto proyectoSeleccionado() {
+        return (Proyecto) vista.getCmbxProyectos().getSelectedItem();
+    }
+
+    private int devolverDesarrolladorSeleccionado() {
+        Recurso r = (Recurso) vista.getCmbxNombreDesarrollador().getSelectedItem();
+        return r == null ? 0 : r.getId();
+    }
+
+    private String devolverNombreDesarrolladorSeleccionado() {
+        Recurso r = (Recurso) vista.getCmbxNombreDesarrollador().getSelectedItem();
+        return r == null ? "" : r.getNombre();
+    }
+
+    private void filtrarDatosModo(List<DatoEstadistica> datos) {
+        int id = devolverDesarrolladorSeleccionado();
+        if (id == -1) {            // Todos los desarrolladores Senior
+            datos.removeIf(d -> !"Senior".equalsIgnoreCase(d.getTipo()));
+        } else if (id > 0) {       // Un desarrollador especifico
+            String nombre = devolverNombreDesarrolladorSeleccionado().trim();
+            datos.removeIf(d -> !d.getDesarrollador().trim().equalsIgnoreCase(nombre));
+        }
+    }
+
     private void previsualizar() {
         try {
-            Recurso dev = (Recurso) vista.getCmbxNombreDesarrollador().getSelectedItem();
-            if (dev == null || dev.getId() <= 0)
-                throw new Exception("Selecciona un desarrollador en particular (no 'Todos los desarrolladores').");
+            Proyecto proyecto = proyectoSeleccionado();
+            if (proyecto == null) throw new Exception("Selecciona un proyecto.");
 
             String fechaInicio = vista.getTxtFechaInicio().getText().trim();
             String fechaFin = vista.getTxtFechaFin().getText().trim();
-            if (fechaInicio.isEmpty() || fechaFin.isEmpty())
-                throw new Exception("La fecha de inicio y la fecha de fin son obligatorias.");
+            // El rango de fechas es solo informativo: se muestran las horas
+            // totales registradas del proyecto seleccionado (sin filtro por fecha).
+            if (fechaInicio.isEmpty()) fechaInicio = "---";
+            if (fechaFin.isEmpty()) fechaFin = "---";
 
             // Mostrar el proximo numero de reporte que se crearia
             vista.getTxtIDReporteE().setText(String.valueOf(ReporteEstadistico.proximoId()));
 
-            List<DatoEstadistica> datos = ReporteEstadistico.horasPorProyectoDelDesarrollador(
-                    dev.getId(), fechaInicio, fechaFin);
+            List<DatoEstadistica> datos = ReporteEstadistico.horasPorDesarrollador(
+                    proyecto.getId(), fechaInicio, fechaFin);
+            filtrarDatosModo(datos);
 
-            System.out.println("PREVISUALIZAR: desarrollador=" + dev.getNombre()
-                    + " proyectos=" + datos.size() + " rango=" + fechaInicio + " a " + fechaFin);
+            System.out.println("PREVISUALIZAR: proyecto=" + proyecto.getNombre()
+                    + " desarrolladores=" + datos.size() + " rango(referencia)=" + fechaInicio + " a " + fechaFin);
 
             if (datos.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(vista,
-                        "El desarrollador \"" + dev.getNombre()
-                        + "\" no tiene horas registradas entre "
-                        + fechaInicio + " y " + fechaFin + ".\n"
-                        + "No hay proyectos con actividad en ese lapso.",
+                String desarrollo = devolverNombreDesarrolladorSeleccionado();
+                String mensaje;
+                if (desarrollo == null || desarrollo.trim().isEmpty()) {
+                    mensaje = "No hay horas registradas para el proyecto \"" + proyecto.getNombre()
+                            + "\".\nSeleccione otro desarrollador o proyecto para generar la estadística.";
+                } else {
+                    mensaje = "El desarrollador \"" + desarrollo
+                            + "\" no tiene horas registradas en el proyecto \"" + proyecto.getNombre()
+                            + "\".\nVerifique que el desarrollador esté asignado al proyecto "
+                            + "y que haya registrado horas de actividad.";
+                }
+                javax.swing.JOptionPane.showMessageDialog(vista, mensaje,
                         "Sin actividad registrada",
                         javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
-            JFreeChart chart = crearGraficoBarrasProyectos(datos, dev.getNombre());
+            JFreeChart chart = crearGraficoBarras(datos, proyecto.getNombre());
             ChartPanel chartPanel = new ChartPanel(chart);
             chartPanel.setPreferredSize(new java.awt.Dimension(560, 260));
             chartPanel.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -134,8 +162,10 @@ public class ReporteEstadisticoControlador {
         } catch (Exception ex) { mostrarError(ex); }
     }
 
-    private JFreeChart crearGraficoBarrasProyectos(List<DatoEstadistica> datos, String desarrollador) {
+    private JFreeChart crearGraficoBarras(List<DatoEstadistica> datos, String tituloProyecto) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        // Una sola serie "Horas" con cada desarrollo como categoria en el eje X:
+        // el nombre de cada desarrollo sale debajo de su barra.
         int n = datos.size();
         java.awt.Color[] colores = {
             new java.awt.Color(31, 119, 180),
@@ -153,12 +183,11 @@ public class ReporteEstadisticoControlador {
         }
 
         JFreeChart chart = ChartFactory.createBarChart(
-            "Horas trabajadas de " + desarrollador,
-            "Proyecto", "Horas", dataset,
+            "Horas trabajadas - " + tituloProyecto,
+            "Desarrollador", "Horas", dataset,
             org.jfree.chart.plot.PlotOrientation.VERTICAL,
             false, true, false);
 
-        // Colores distintos por barra (una serie, una categoria por proyecto)
         final java.awt.Color[] paletaColores = colores;
         final int total = n;
         BarRenderer renderer = new BarRenderer() {
@@ -174,38 +203,45 @@ public class ReporteEstadisticoControlador {
 
     private void exportarPDF() {
         try {
-            Recurso dev = (Recurso) vista.getCmbxNombreDesarrollador().getSelectedItem();
-            if (dev == null || dev.getId() <= 0)
-                throw new Exception("Selecciona un desarrollador en particular (no 'Todos los desarrolladores').");
+            Proyecto proyecto = proyectoSeleccionado();
+            if (proyecto == null) throw new Exception("Selecciona un proyecto.");
 
             String fechaInicio = vista.getTxtFechaInicio().getText().trim();
             String fechaFin = vista.getTxtFechaFin().getText().trim();
-            if (fechaInicio.isEmpty() || fechaFin.isEmpty())
-                throw new Exception("La fecha de inicio y la fecha de fin son obligatorias.");
+            // El rango de fechas es solo informativo: se archivan y muestran las
+            // horas totales del proyecto. Si el usuario no indica fechas, se usan
+            // las del periodo del proyecto para el historial.
+            if (fechaInicio.isEmpty()) fechaInicio = "---";
+            if (fechaFin.isEmpty()) fechaFin = "---";
 
-            List<DatoEstadistica> datos = ReporteEstadistico.horasPorProyectoDelDesarrollador(
-                    dev.getId(), fechaInicio, fechaFin);
+            // Archivar el reporte en el historial (usa fechas validas si estan vacias)
+            String fechaInicioBD = ("---".equals(fechaInicio)) ? proyecto.getFechaInicio() : fechaInicio;
+            String fechaFinBD = ("---".equals(fechaFin)) ? proyecto.getFechaFin() : fechaFin;
+            ReporteEstadistico.ResultadoGuardado guardado =
+                    ReporteEstadistico.guardar(proyecto.getId(), fechaInicioBD, fechaFinBD);
+            if (guardado.getId() > 0)
+                vista.getTxtIDReporteE().setText(String.valueOf(guardado.getId()));
+
+            List<DatoEstadistica> datos = ReporteEstadistico.horasPorDesarrollador(
+                    proyecto.getId(), fechaInicio, fechaFin);
+            filtrarDatosModo(datos);
 
             if (datos.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(vista,
-                        "El desarrollador \"" + dev.getNombre()
-                        + "\" no tiene horas registradas entre "
-                        + fechaInicio + " y " + fechaFin + ".\n"
-                        + "No se generará el PDF. No hay proyectos con actividad en ese lapso.",
+                String desarrollo = devolverNombreDesarrolladorSeleccionado();
+                String mensaje;
+                if (desarrollo == null || desarrollo.trim().isEmpty()) {
+                    mensaje = "No hay horas registradas para el proyecto \"" + proyecto.getNombre()
+                            + "\".\nNo se generará el PDF. Seleccione otro proyecto.";
+                } else {
+                    mensaje = "El desarrollador \"" + desarrollo
+                            + "\" no tiene horas registradas en el proyecto \"" + proyecto.getNombre()
+                            + "\".\nNo se generará el PDF. Verifique la asignación y el registro de horas.";
+                }
+                javax.swing.JOptionPane.showMessageDialog(vista, mensaje,
                         "Sin actividad registrada",
                         javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-
-            // Archivar el reporte en el historial (un registro por proyecto)
-            int ultimoId = 0;
-            for (DatoEstadistica d : datos) {
-                ReporteEstadistico.ResultadoGuardado g = ReporteEstadistico.guardarPorProyecto(
-                        d.getId(), dev.getNombre(), fechaInicio, fechaFin, d.getTotalHoras());
-                if (g.getId() > ultimoId) ultimoId = g.getId();
-            }
-            if (ultimoId > 0)
-                vista.getTxtIDReporteE().setText(String.valueOf(ultimoId));
 
             JFileChooser selector = new JFileChooser();
             selector.setFileFilter(new FileNameExtensionFilter("PDF", "pdf"));
@@ -214,7 +250,7 @@ public class ReporteEstadisticoControlador {
             if (!ruta.toLowerCase().endsWith(".pdf")) ruta += ".pdf";
 
             // Generar imagen del grafico y renderizarla en el PDF
-            JFreeChart chart = crearGraficoBarrasProyectos(datos, dev.getNombre());
+            JFreeChart chart = crearGraficoBarras(datos, proyecto.getNombre());
             File imagenTmp = File.createTempFile("grafico_", ".png");
             ChartUtils.saveChartAsPNG(imagenTmp, chart, 800, 400);
 
@@ -227,18 +263,20 @@ public class ReporteEstadisticoControlador {
             doc.open();
             doc.add(new com.itextpdf.text.Paragraph("REPORTE ESTADISTICO DE HORAS", new com.itextpdf.text.Font(
                     com.itextpdf.text.Font.FontFamily.HELVETICA, 16, com.itextpdf.text.Font.BOLD)));
-            doc.add(new com.itextpdf.text.Paragraph("Desarrollador: " + dev.getNombre()));
+            doc.add(new com.itextpdf.text.Paragraph("Proyecto: " + proyecto.getNombre()));
             doc.add(new com.itextpdf.text.Paragraph("Periodo: " + fechaInicio + " a " + fechaFin));
             doc.add(com.itextpdf.text.Chunk.NEWLINE);
             doc.add(imgPdf);
             doc.add(com.itextpdf.text.Chunk.NEWLINE);
 
             double totalGeneral = 0;
-            com.itextpdf.text.pdf.PdfPTable tabla = new com.itextpdf.text.pdf.PdfPTable(2);
-            tabla.addCell("Proyecto");
+            com.itextpdf.text.pdf.PdfPTable tabla = new com.itextpdf.text.pdf.PdfPTable(3);
+            tabla.addCell("Desarrollador");
+            tabla.addCell("Tipo");
             tabla.addCell("Horas");
             for (DatoEstadistica d : datos) {
                 tabla.addCell(d.getDesarrollador());
+                tabla.addCell(d.getTipo());
                 tabla.addCell(String.format("%.2f", d.getTotalHoras()));
                 totalGeneral += d.getTotalHoras();
             }

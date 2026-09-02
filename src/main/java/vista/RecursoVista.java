@@ -50,6 +50,7 @@ public class RecursoVista extends javax.swing.JFrame {
         txtContrasenaDev = new javax.swing.JTextField();
         btnSiguiente = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
+        btnIrMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,6 +117,9 @@ public class RecursoVista extends javax.swing.JFrame {
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(this::btnRegresarActionPerformed);
 
+        btnIrMenu.setText("Ir al Menú");
+        btnIrMenu.addActionListener(this::btnIrMenuActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -160,6 +164,8 @@ public class RecursoVista extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnIrMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
                 .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSiguiente)
@@ -214,7 +220,8 @@ public class RecursoVista extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSiguiente)
-                    .addComponent(btnRegresar))
+                    .addComponent(btnRegresar)
+                    .addComponent(btnIrMenu))
                 .addGap(12, 12, 12))
         );
 
@@ -240,6 +247,10 @@ public class RecursoVista extends javax.swing.JFrame {
     private void txtNumeroCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroCedulaActionPerformed
     }//GEN-LAST:event_txtNumeroCedulaActionPerformed
 
+    private void btnIrMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIrMenuActionPerformed
+
     public javax.swing.JButton getBtnGuardar() {
         return btnGuardar;
     }
@@ -258,6 +269,10 @@ public class RecursoVista extends javax.swing.JFrame {
 
     public javax.swing.JButton getBtnRegresar() {
         return btnRegresar;
+    }
+
+    public javax.swing.JButton getBtnIrMenu() {
+        return btnIrMenu;
     }
 
     public javax.swing.JComboBox<String> getCmbTipo() {
@@ -300,6 +315,7 @@ public class RecursoVista extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnHabilitar;
+    private javax.swing.JButton btnIrMenu;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnSiguiente;
     private javax.swing.JComboBox<String> cmbTipo;

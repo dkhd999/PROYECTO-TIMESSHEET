@@ -33,6 +33,7 @@ public class AsignacionVista extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnSiguiente = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
+        btnIrMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,6 +60,9 @@ public class AsignacionVista extends javax.swing.JFrame {
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(this::btnRegresarActionPerformed);
 
+        btnIrMenu.setText("Ir al Menú");
+        btnIrMenu.addActionListener(this::btnIrMenuActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -67,6 +71,8 @@ public class AsignacionVista extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnIrMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
                         .addComponent(btnRegresar)
                         .addGap(27, 27, 27)
                         .addComponent(btnSiguiente))
@@ -104,7 +110,8 @@ public class AsignacionVista extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSiguiente)
-                    .addComponent(btnRegresar))
+                    .addComponent(btnRegresar)
+                    .addComponent(btnIrMenu))
                 .addGap(35, 35, 35))
         );
 
@@ -114,6 +121,10 @@ public class AsignacionVista extends javax.swing.JFrame {
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnIrMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIrMenuActionPerformed
 
     public javax.swing.JButton getBtnAsignar() {
         return btnAsignar;
@@ -125,6 +136,10 @@ public class AsignacionVista extends javax.swing.JFrame {
 
     public javax.swing.JButton getBtnRegresar() {
         return btnRegresar;
+    }
+
+    public javax.swing.JButton getBtnIrMenu() {
+        return btnIrMenu;
     }
 
     public javax.swing.JComboBox<modelo.Proyecto> getCmbProyectos() {
@@ -166,6 +181,7 @@ public class AsignacionVista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignar;
+    private javax.swing.JButton btnIrMenu;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnSiguiente;
     private javax.swing.JComboBox<modelo.Proyecto> cmbProyectos;
